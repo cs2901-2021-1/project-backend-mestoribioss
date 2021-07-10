@@ -8,19 +8,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import data.entities.DistributionResponse;
-import data.repositories.DistributionResourcesRepository;
 import java.util.Optional;
-import java.util.List;
-import config.Pair;
 
 @Service
 @Transactional
-public class DistributionService {
+public class AuthService
+{
     @Autowired
-    private DistributionResourcesRepository distributionRepository;
+    private WhiteListService whiteListService;
 
-    public DistributionResponse generateDistributions(List<Pair<Integer, String>> cursos){
-        // TODO
+    public void login(){
+
     }
 }
