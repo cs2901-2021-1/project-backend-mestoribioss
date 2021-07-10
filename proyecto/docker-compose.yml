@@ -4,7 +4,7 @@ services:
   db:
     image: 'postgres:13.1-alpine'
     volumes:
-        - ./postgres-sofware:/var/lib/postgresql/data
+        - postgres-vol:/var/lib/postgresql/data
     container_name: dbsoftware
     restart: always
     ports:
@@ -32,3 +32,5 @@ services:
 networks:
     planeamiento-network:
         driver: bridge
+volumes:
+    postgres-vol:
