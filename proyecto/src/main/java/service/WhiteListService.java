@@ -18,9 +18,7 @@ public class WhiteListService {
     @Autowired
     private UserRepository userRepository;
 
-    // Añadir a la tabla usuario para que tenga permiso
-    public User save(UserDTO userDTO){
-        var user = new User();
+    private User modify(User user, UserDTO userDTO){
         user.setLastName(userDTO.getLastName());
         user.setName(userDTO.getName());
         user.setRole(userDTO.getRole());
@@ -29,11 +27,22 @@ public class WhiteListService {
         return userRepository.save(user);
     }
 
+    // Añadir a la tabla usuario para que tenga permiso
+    public User save(UserDTO userDTO){
+        var user = new User();
+        return modify(user, userDTO);
+    }
+
     // Quitarle los permisos a un usuario de la whitelist
-    public void deleteById(Long id){
+    public User deleteById(Long id){
         User user = findOneById(id);
         user.setStatus(0);
-        userRepository.save(user);
+        return userRepository.save(user);
+    }
+
+    public User updateUser(UserDTO userDTO, Long id){
+        User user = findOneById(id);
+        return modify(user, userDTO);
     }
 
     public User findOneById(Long id){
