@@ -48,8 +48,4 @@ public class UserDTO {
         this.role = role;
     }
 
-   
-
-
-    
 }
