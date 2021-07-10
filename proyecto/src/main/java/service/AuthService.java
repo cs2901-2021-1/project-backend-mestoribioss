@@ -3,10 +3,15 @@ package service;
 import service.custom_exceptions.CustomNotFoundException;
 import data.dtos.UserDTO;
 import data.entities.User;
+import data.repositories.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.ArrayList;
+
 
 import java.util.Optional;
 
@@ -15,9 +20,22 @@ import java.util.Optional;
 public class AuthService
 {
     @Autowired
-    private WhiteListService whiteListService;
+    private UserRepository userRepository;
 
     public void login(){
 
     }
+
+    public boolean isInWhitelist(String email){
+        User user = userRepository.findByEmail(email);
+        if(user.getStatus() == 1){
+            return true;
+        }
+        return false;
+    }
+
+
+
+    
+    
 }
