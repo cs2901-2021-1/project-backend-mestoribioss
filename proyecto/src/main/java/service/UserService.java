@@ -23,6 +23,7 @@ public class UserService {
         user.setName(userDTO.getName());
         user.setRole(userDTO.getRole());
         user.setStatus(userDTO.getStatus());
+        user.setEmail(userDTO.getEmail());
         return userRepository.save(user);
     }
 

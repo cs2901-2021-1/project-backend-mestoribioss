@@ -30,8 +30,19 @@ public class User {
     @Column(name = "role", nullable = false)
     private Integer role;
 
+    @Column(name="email",nullable = false,length = 512)
+    private String email;
+
     public Long getId() {
         return id;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public void setId(Long id) {

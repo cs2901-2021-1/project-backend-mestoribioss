@@ -5,9 +5,16 @@ public class UserDTO {
     String lastName;
     Integer status;
     Integer role;
+    String email;
     
     public UserDTO(){
         //DEFAULT CONSTRUCTOR
+    }
+    public String getEmail() {
+        return email;
+    }
+    public void setEmail(String email) {
+        this.email = email;
     }
     public String getName() {
         return name;
