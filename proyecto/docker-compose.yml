@@ -10,13 +10,13 @@ services:
     ports:
         - "5433:5432"
     networks:
-        - planiamiento-network
+        - planeamiento-network
     environment:
       - POSTGRES_USER=root
       - POSTGRES_PASSWORD=root
-      - POSTGRES_DB=db_planiamiento
+      - POSTGRES_DB=db_planeamiento
   pgadmin:
-    container_name: pgadmin4_container_planiamiento
+    container_name: pgadmin4_container_planeamiento
     image: dpage/pgadmin4
     restart: always
     environment:
@@ -25,10 +25,10 @@ services:
     ports:
         - "5050:80"
     networks:
-        - planiamiento-network
+        - planeamiento-network
     depends_on:
         - db
 
 networks:
-    planiamiento-network:
+    planeamiento-network:
         driver: bridge
