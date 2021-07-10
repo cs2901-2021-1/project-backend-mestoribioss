@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -38,5 +40,20 @@ public class WhiteListService {
         Optional<User> userOptional = userRepository.findById(id);
         if (userOptional.isPresent()) return userOptional.get();
         else throw new CustomNotFoundException("¡El usuario con el id " + id + " no existe!");
+    }
+
+    public List<User> getAll(){
+        return userRepository.findAll();
+    }
+
+    public List<User> getAllNoDeleted(){
+        List<User> allUsers = getAll();
+        List<User> usersNoDeleted = new ArrayList<>();
+        for (var user : allUsers) {
+            if (user.getStatus() == 1){
+                usersNoDeleted.add(user);
+            }
+        }
+        return usersNoDeleted;
     }
 }
