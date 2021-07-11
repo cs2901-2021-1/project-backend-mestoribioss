@@ -33,6 +33,9 @@ public class User {
     @Column(name="email",nullable = false,length = 512,unique=true )
     private String email;
 
+    public User() {
+    }
+
     public Long getId() {
         return id;
     }

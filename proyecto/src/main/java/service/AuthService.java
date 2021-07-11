@@ -23,13 +23,13 @@ public class AuthService
     private UserRepository userRepository;
 
 
-    public boolean isInWhitelist(String email){
-        User user = userRepository.findByEmail(email);
-        if(user!=null && user.getStatus() == 1){
-            return true;
-        }
-        return false;
-    }
+    // public boolean isInWhitelist(String email){
+    //     User user = userRepository.findByEmail(email);
+    //     if(user!=null && user.getStatus() == 1){
+    //         return true;
+    //     }
+    //     return false;
+    // }
 
 
 

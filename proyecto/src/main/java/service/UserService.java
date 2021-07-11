@@ -16,7 +16,7 @@ import data.dtos.DatatableDTO;
 
 @Service
 @Transactional
-public class WhiteListService {
+public class UserService {
     @Autowired
     private UserRepository userRepository;
 
@@ -27,6 +27,14 @@ public class WhiteListService {
         user.setStatus(userDTO.getStatus());
         user.setEmail(userDTO.getEmail());
         return userRepository.save(user);
+    }
+
+    public Optional<User> getByEmail(String email){
+        return userRepository.findByEmail(email);
+    }
+
+    public boolean existsEmail(String email){
+        return userRepository.existsByEmail(email);
     }
 
     // Añadir a la tabla usuario para que tenga permiso
