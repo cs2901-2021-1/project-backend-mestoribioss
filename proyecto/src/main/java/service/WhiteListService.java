@@ -1,6 +1,7 @@
 package service;
 
 import service.custom_exceptions.CustomNotFoundException;
+import data.dtos.DatatableDTO;
 import data.dtos.UserDTO;
 import data.entities.User;
 import data.repositories.UserRepository;
@@ -11,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import data.dtos.DatatableDTO;
 
 @Service
 @Transactional
@@ -53,6 +55,17 @@ public class WhiteListService {
 
     public List<User> getAll(){
         return userRepository.findAll();
+    }
+
+    public DatatableDTO getData(){
+        List<User> data =  getAll();
+        Integer recordsTotal = data.size();
+        Integer recordsFiltered = 0;
+        DatatableDTO datatableDTO = new DatatableDTO();
+        datatableDTO.setData(data);
+        datatableDTO.setRecordsTotal(recordsTotal);
+        datatableDTO.setRecordsFiltered(recordsFiltered);
+        return datatableDTO;
     }
 
     public List<User> getAllNoDeleted(){

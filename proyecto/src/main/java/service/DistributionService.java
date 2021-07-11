@@ -2,7 +2,7 @@
 
 // import service.custom_exceptions.CustomNotFoundException;
 // import data.dtos.UserDTO;
-// // import data.entities.User;
+// import data.entities.User;
 
 // import org.springframework.beans.factory.annotation.Autowired;
 // import org.springframework.stereotype.Service;
@@ -20,7 +20,7 @@
 //     @Autowired
 //     private DistributionResourcesRepository distributionRepository;
 
-//     // public DistributionResponse generateDistributions(List<Pair<Integer, String>> cursos){
-//     //     // TODO
-//     // }
+//     public DistributionResponse generateDistributions(List<Pair<Integer, String>> cursos){
+//         // TODO
+//     }
 // }
