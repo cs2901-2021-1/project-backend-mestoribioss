@@ -61,7 +61,10 @@ public class WhiteListService {
         List<User> data =  getAll();
         Integer recordsTotal = data.size();
         Integer recordsFiltered = 0;
-        DatatableDTO datatableDTO = new DatatableDTO(data, recordsTotal, recordsFiltered);
+        DatatableDTO datatableDTO = new DatatableDTO();
+        datatableDTO.setData(data);
+        datatableDTO.setRecordsTotal(recordsTotal);
+        datatableDTO.setRecordsFiltered(recordsFiltered);
         return datatableDTO;
     }
 

@@ -5,15 +5,32 @@ import java.util.List;
 import data.entities.User;
 
 public class DatatableDTO {
-    List<User> data;
-    Integer recordsTotal;
-    Integer recordsFiltered;
+    private List<User> data;
+    private Integer recordsTotal;
+    private Integer recordsFiltered;
 
-    public DatatableDTO(List<User> list, Integer recordsTotal, Integer recordsFiltered) {
-        this.data = list;
-        this.recordsTotal = recordsTotal;
+    public DatatableDTO(){}
+
+    public List<User> getData() {
+        return data;
+    }
+    public Integer getRecordsFiltered() {
+        return recordsFiltered;
+    }
+    public void setRecordsFiltered(Integer recordsFiltered) {
         this.recordsFiltered = recordsFiltered;
     }
+    public Integer getRecordsTotal() {
+        return recordsTotal;
+    }
+    public void setRecordsTotal(Integer recordsTotal) {
+        this.recordsTotal = recordsTotal;
+    }
+    public void setData(List<User> data) {
+        this.data = data;
+    }
+
+    
 
  
 
