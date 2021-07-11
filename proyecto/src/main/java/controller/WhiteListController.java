@@ -3,6 +3,7 @@ package controller;
 import service.WhiteListService;
 
 import java.io.IOException;
+import java.util.HashMap;
 
 import org.springframework.http.HttpStatus;
 
@@ -30,14 +31,22 @@ public class WhiteListController {
 
     
     @PutMapping("/update/{id}")
-    public User updateUser(@RequestBody UserDTO userDTO, @PathVariable Long id){
-        return whileListService.updateUser(userDTO,id);
+    public ResponseEntity<?> updateUser(@RequestBody UserDTO userDTO, @PathVariable Long id){
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("data", whileListService.updateUser(userDTO,id));
+        map.put("message", "Usuario actualizado!");
+
+        return new ResponseEntity(map, HttpStatus.OK);
     }
 
 
-    @GetMapping("/{id}")
-    public User getUserById(@PathVariable Long id){
-        return whileListService.findOneById(id);
+    @GetMapping("/show/{id}")
+    public ResponseEntity<?> getUserById(@PathVariable Long id){
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("data", whileListService.findOneById(id));
+        map.put("message", "Usuario obtenido");
+
+        return new ResponseEntity(map, HttpStatus.OK);
     }
 
     @PostMapping("/datatable")
