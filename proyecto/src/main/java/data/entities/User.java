@@ -30,7 +30,7 @@ public class User {
     @Column(name = "role", nullable = false)
     private Integer role;
 
-    @Column(name="email",nullable = false,length = 512)
+    @Column(name="email",nullable = false,length = 512,unique=true )
     private String email;
 
     public Long getId() {

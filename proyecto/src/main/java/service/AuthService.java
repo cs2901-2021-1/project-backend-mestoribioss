@@ -22,9 +22,6 @@ public class AuthService
     @Autowired
     private UserRepository userRepository;
 
-    public void login(){
-
-    }
 
     public boolean isInWhitelist(String email){
         User user = userRepository.findByEmail(email);
