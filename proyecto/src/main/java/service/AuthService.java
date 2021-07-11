@@ -25,7 +25,7 @@ public class AuthService
 
     public boolean isInWhitelist(String email){
         User user = userRepository.findByEmail(email);
-        if(user.getStatus() == 1){
+        if(user!=null && user.getStatus() == 1){
             return true;
         }
         return false;
