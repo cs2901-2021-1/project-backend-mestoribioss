@@ -10,7 +10,7 @@ public class UserPrincipal implements UserDetails {
 
     private String email;
     private String password;
-    private Collection<?extends GrantedAuthority> authorities;
+    private Collection<? extends GrantedAuthority> authorities;
 
 
     public UserPrincipal(String email, String password, Collection<? extends GrantedAuthority> authorities) {

@@ -13,6 +13,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.util.StringUtils;
 
 import mestoribios.proyecto.security.UserDetailsServiceImpl;
 
@@ -34,11 +35,13 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
         try {
             String token = getToken(req);
-            String email = jwtProvider.getEmailFromToken(token);
-            UserDetails userDetails = userDetailsServiceImpl.loadUserByUsername(email);
-            UsernamePasswordAuthenticationToken auth =
-                    new UsernamePasswordAuthenticationToken(email, null, userDetails.getAuthorities());
-            SecurityContextHolder.getContext().setAuthentication(auth);
+            if(StringUtils.hasText(token)){
+                String email = jwtProvider.getEmailFromToken(token);
+                UserDetails userDetails = userDetailsServiceImpl.loadUserByUsername(email);
+                UsernamePasswordAuthenticationToken auth =
+                        new UsernamePasswordAuthenticationToken(email, null, userDetails.getAuthorities());
+                SecurityContextHolder.getContext().setAuthentication(auth);
+            }
         }catch (Exception e){
             logger.error("fail en el método doFilter");
         }

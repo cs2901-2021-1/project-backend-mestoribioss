@@ -13,6 +13,7 @@ import mestoribios.proyecto.security.jwt.JwtProvider;
 import mestoribios.proyecto.service.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -33,11 +34,14 @@ import java.util.HashMap;
 @CrossOrigin
 public class OAuthController {
     
-    @Value("${google.clientId}")
-    String googleClientId;
+    // @Value("${google.clientId}")
+    // private String googleClientId;
 
-    @Value("${secretPsw}")
-    String secretPsw;
+    // @Value("${secretPsw}")
+    // private String secretPsw;
+
+    @Autowired
+    Environment env;
 
     @Autowired
     PasswordEncoder passwordEncoder;
@@ -62,7 +66,7 @@ public class OAuthController {
         final JacksonFactory jacksonFactory = JacksonFactory.getDefaultInstance();
         GoogleIdTokenVerifier.Builder verifier =
                  new GoogleIdTokenVerifier.Builder(transport, jacksonFactory)
-                 .setAudience(Collections.singletonList(googleClientId));
+                 .setAudience(Collections.singletonList(env.getProperty("google.clientId").toString()));
         final GoogleIdToken googleIdToken = GoogleIdToken.parse(verifier.getJsonFactory(), TokenDTO.getValue());
         final GoogleIdToken.Payload payload = googleIdToken.getPayload();
         User user= new User();
@@ -87,8 +91,7 @@ public class OAuthController {
 
     private TokenDTO login(User user){
         Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(user.getEmail(), secretPsw)
-        );
+                new UsernamePasswordAuthenticationToken(user.getEmail(), env.getProperty("secretPsw").toString()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = jwtProvider.generateToken(authentication);
         TokenDTO tokenDto = new TokenDTO();
@@ -97,7 +100,7 @@ public class OAuthController {
     }
 
     private User saveUsuario(String email,String name,String lastName){
-        User usuario = new User(email, passwordEncoder.encode(secretPsw),1,name,lastName);;
+        User usuario = new User(email, passwordEncoder.encode(env.getProperty("secretPsw").toString()),1,name,lastName);;
         return userService.save(usuario);
     }
 }

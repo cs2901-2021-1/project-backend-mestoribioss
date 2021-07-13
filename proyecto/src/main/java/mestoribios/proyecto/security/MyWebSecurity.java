@@ -24,7 +24,6 @@ import mestoribios.proyecto.security.jwt.JwtTokenFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -48,8 +47,8 @@ public class MyWebSecurity  extends WebSecurityConfigurerAdapter{
         return new BCryptPasswordEncoder();
     }
 
-    @Override
     @Bean
+    @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
@@ -59,6 +58,7 @@ public class MyWebSecurity  extends WebSecurityConfigurerAdapter{
         return super.authenticationManager();
     }
 
+    
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsServiceImpl).passwordEncoder(passwordEncoder());
@@ -76,36 +76,6 @@ public class MyWebSecurity  extends WebSecurityConfigurerAdapter{
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.addFilterBefore(jwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
     }
-
-
-//  @Bean
-//  CorsConfigurationSource corsConfigurationSource() {
-//      //CorsConfiguration configuration = new CorsConfiguration();
-//     //  configuration.setAllowedOrigins(List.of("*"));
-//     //  configuration.setAllowedMethods(List.of("GET","POST","PUT","DELETE"));
-//     //  configuration.setAllowCredentials(true);
-//     //  //the below three lines will add the relevant CORS response headers
-//     //  configuration.addAllowedOrigin("*");
-//     //  configuration.addAllowedHeader("*");
-//     //  configuration.addAllowedMethod("*");
-//     //  UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-//     //  source.registerCorsConfiguration("/**", configuration);
-
-//      CorsConfiguration configuration = new CorsConfiguration();
-//      configuration.setAllowedOrigins(List.of("http://localhost:4200"));
-//      configuration.setAllowedMethods(List.of("GET","POST","PUT","DELETE"));
-//      UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-//      source.registerCorsConfiguration("/**", configuration);
-//      //return source;
-//      return source;
-//  }
-
-// @Bean
-// CorsConfigurationSource corsConfigurationSource() {
-//     UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-//     source.registerCorsConfiguration("/**", new CorsConfiguration().applyPermitDefaultValues());
-//     return source;
-// }
 
 
 
