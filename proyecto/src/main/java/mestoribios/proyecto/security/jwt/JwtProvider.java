@@ -33,7 +33,7 @@ public class JwtProvider {
         UserPrincipal usuarioPrincipal = (UserPrincipal) authentication.getPrincipal();
         return Jwts.builder().setSubject(usuarioPrincipal.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + Integer.parseInt(env.getProperty("expiration"))))
+                .setExpiration(new Date(System.currentTimeMillis() + Integer.parseInt(env.getProperty("jwt.expiration"))))
                 .signWith(SignatureAlgorithm.HS512, env.getProperty("jwt.secret").toString())
                 .compact();
     }
