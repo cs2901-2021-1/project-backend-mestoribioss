@@ -7,6 +7,8 @@ import mestoribios.proyecto.data.repositories.UserRepository;
 import mestoribios.proyecto.service.custom_exceptions.CustomNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +19,14 @@ import java.util.Optional;
 @Service
 @Transactional
 public class UserService {
+
+    @Autowired
+    Environment env;
+    
+
+    @Autowired
+    PasswordEncoder passwordEncoder;
+    
     @Autowired
     private UserRepository userRepository;
 
@@ -40,6 +50,7 @@ public class UserService {
     // Añadir a la tabla usuario para que tenga permiso
     public User save(UserDTO userDTO){
         var user = new User();
+        user.setPassword(passwordEncoder.encode(env.getProperty("secretPsw").toString()));
         return modify(user, userDTO);
     }
 

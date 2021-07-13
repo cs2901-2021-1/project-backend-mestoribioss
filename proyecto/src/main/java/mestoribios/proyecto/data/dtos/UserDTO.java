@@ -1,10 +1,12 @@
 package mestoribios.proyecto.data.dtos;
 
+import javax.print.DocFlavor.STRING;
+
 public class UserDTO {
     String name;
     String lastName;
     Integer status;
-    Integer role;
+    String role;
     String email;
     
     public UserDTO(){
@@ -39,13 +41,13 @@ public class UserDTO {
     public void setStatus(Integer status) {
         this.status = status;
     }
-
-    public Integer getRole() {
+    public String getRole() {
         return role;
     }
-
-    public void setRole(Integer role) {
+    public void setRole(String role) {
         this.role = role;
     }
+
+  
 
 }

@@ -23,23 +23,24 @@ public class User {
     @Column(name = "name", length = DB_CHAR_LENGTH, nullable = false)
     private String name;
 
-
     @Column(name = "password", nullable = false)
     private String password;
 
     @Column(name = "lastName", length = DB_CHAR_LENGTH, nullable = false)
     private String lastName;
-    
+
     @Column(name = "status", nullable = false)
     private Integer status;
 
-    @Column(name = "role", nullable = false)
-    private Integer role;
+    @Column(name = "role", nullable = false,length = DB_CHAR_LENGTH)
+    private String role; //admin,user
 
     @Column(name="email",nullable = false,length = 512,unique=true )
     private String email;
+    
+    public User() {}
 
-    public User(String email, String password,Integer rol,String name,String lastName) {
+    public User(String email, String password,String rol,String name,String lastName) {
         this.name=name;
         this.lastName=lastName;
         this.email = email;
@@ -54,10 +55,6 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-
-    public User() {
     }
 
     public Long getId() {
@@ -100,13 +97,15 @@ public class User {
         this.status = status;
     }
 
-    public Integer getRole() {
+        
+    public String getRole() {
         return role;
     }
 
-    public void setRole(Integer role) {
+    public void setRole(String role) {
         this.role = role;
     }
+
 
    
     

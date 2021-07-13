@@ -27,9 +27,9 @@ import org.slf4j.LoggerFactory;
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-public class MyWebSecurity  extends WebSecurityConfigurerAdapter{
+public class WebSecurityConfig  extends WebSecurityConfigurerAdapter{
     
-    private final static Logger logger = LoggerFactory.getLogger(MyWebSecurity.class);
+    private final static Logger logger = LoggerFactory.getLogger(WebSecurityConfig.class);
     
     @Autowired
     UserDetailsServiceImpl userDetailsServiceImpl;

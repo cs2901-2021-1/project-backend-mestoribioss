@@ -1,12 +1,9 @@
 package mestoribios.proyecto.controller;
 
-import java.io.IOException;
 
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
 import com.google.api.client.http.javanet.NetHttpTransport;
-import com.google.api.client.util.Value;
-
 import mestoribios.proyecto.data.dtos.TokenDTO;
 import mestoribios.proyecto.data.entities.User;
 import mestoribios.proyecto.security.jwt.JwtProvider;
@@ -17,13 +14,11 @@ import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-// import org.springframework.security.crypto.password.PasswordEncoder;
 import com.google.api.client.json.jackson2.JacksonFactory;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import java.util.Collections;
@@ -34,17 +29,9 @@ import java.util.HashMap;
 @CrossOrigin
 public class OAuthController {
     
-    // @Value("${google.clientId}")
-    // private String googleClientId;
-
-    // @Value("${secretPsw}")
-    // private String secretPsw;
 
     @Autowired
     Environment env;
-
-    @Autowired
-    PasswordEncoder passwordEncoder;
 
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -72,16 +59,12 @@ public class OAuthController {
         User user= new User();
         if(userService.existsEmail(payload.getEmail())){
             user=userService.getByEmail(payload.getEmail()).get();
-           
+            TokenDTO tokenRes = login(user);  
+            return new ResponseEntity(tokenRes, HttpStatus.OK);
         }else{
-            user=saveUsuario(payload.getEmail(), (String) payload.get("name"), (String) payload.get("name"));
+            map.put("message", "Usuario no se encuentra en la WhiteList");
+            return new ResponseEntity(map,HttpStatus.UNAUTHORIZED);
         }
-
-        TokenDTO tokenRes = login(user);
-        return new ResponseEntity(tokenRes, HttpStatus.OK);
-
-        // map.put("message", "Usuario no esta en la whiteList");
-        // return new ResponseEntity(map,HttpStatus.UNAUTHORIZED);
         
     }catch(Exception e){
         map.put("error", e.getMessage());
@@ -99,8 +82,8 @@ public class OAuthController {
         return tokenDto;
     }
 
-    private User saveUsuario(String email,String name,String lastName){
-        User usuario = new User(email, passwordEncoder.encode(env.getProperty("secretPsw").toString()),1,name,lastName);;
-        return userService.save(usuario);
-    }
+    // private User saveUsuario(String email,String name,String lastName){
+    //     User usuario = new User(email, passwordEncoder.encode(env.getProperty("secretPsw").toString()),"admin",name,lastName);;
+    //     return userService.save(usuario);
+    // }
 }

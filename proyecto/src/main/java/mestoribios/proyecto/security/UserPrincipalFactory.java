@@ -12,7 +12,7 @@ public class UserPrincipalFactory {
 
     public static UserPrincipal build (User user){
         List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-        authorities.add(new SimpleGrantedAuthority(user.getRole().toString()));
+        authorities.add(new SimpleGrantedAuthority(user.getRole()));
         return new UserPrincipal(user.getEmail(),user.getPassword(),authorities);
         
     }

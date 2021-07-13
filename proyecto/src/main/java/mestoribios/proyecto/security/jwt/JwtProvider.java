@@ -21,13 +21,6 @@ public class JwtProvider {
     @Autowired
     Environment env;
     
-    // @Value("${jwt.secret}")
-    // String secret;
-
-
-    // @Value("${jwt.expiration}")
-    // int expiration;
-
 
     public String generateToken(Authentication authentication){
         UserPrincipal usuarioPrincipal = (UserPrincipal) authentication.getPrincipal();
