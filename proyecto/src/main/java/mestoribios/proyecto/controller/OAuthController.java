@@ -6,21 +6,20 @@ import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import mestoribios.proyecto.data.dtos.TokenDTO;
 import mestoribios.proyecto.data.entities.User;
-import mestoribios.proyecto.security.jwt.JwtProvider;
+import mestoribios.proyecto.service.AuthService;
 import mestoribios.proyecto.service.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
+
 import com.google.api.client.json.jackson2.JacksonFactory;
 
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.CrossOrigin;
+
 import java.util.Collections;
 import java.util.HashMap;
 
@@ -34,16 +33,10 @@ public class OAuthController {
     Environment env;
 
     @Autowired
-    private AuthenticationManager authenticationManager;
-
-    @Autowired
-    JwtProvider jwtProvider;
-
-    @Autowired
     UserService userService;
 
-
-
+    @Autowired
+    AuthService authService;
 
     @PostMapping("/google")
     public ResponseEntity<?> google(@RequestBody TokenDTO TokenDTO) {
@@ -59,8 +52,11 @@ public class OAuthController {
         User user= new User();
         if(userService.existsEmail(payload.getEmail())){
             user=userService.getByEmail(payload.getEmail()).get();
-            TokenDTO tokenRes = login(user);  
-            return new ResponseEntity(tokenRes, HttpStatus.OK);
+            TokenDTO tokenRes = authService.login(user);
+            map.put("message","Usuario inicio sessión satisfactoriamente");
+            map.put("token",tokenRes.getValue());
+            map.put("user",user);
+            return new ResponseEntity(map, HttpStatus.OK);
         }else{
             map.put("message", "Usuario no se encuentra en la WhiteList");
             return new ResponseEntity(map,HttpStatus.UNAUTHORIZED);
@@ -72,18 +68,17 @@ public class OAuthController {
         }
     }
 
-    private TokenDTO login(User user){
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(user.getEmail(), env.getProperty("secretPsw").toString()));
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        String jwt = jwtProvider.generateToken(authentication);
-        TokenDTO tokenDto = new TokenDTO();
-        tokenDto.setValue(jwt);
-        return tokenDto;
+    @GetMapping("/google/profile")
+    public ResponseEntity<?> googleProfile() {
+        HashMap<String, Object> map = new HashMap<>();
+        try{
+            map.put("user",authService.getProfile());
+            // map.put("principal",principal.getName());
+            return new ResponseEntity(map, HttpStatus.OK);
+        }catch(Exception e){
+            map.put("error", e.getMessage());
+            return new ResponseEntity(map,HttpStatus.BAD_REQUEST);
+            }
     }
 
-    // private User saveUsuario(String email,String name,String lastName){
-    //     User usuario = new User(email, passwordEncoder.encode(env.getProperty("secretPsw").toString()),"admin",name,lastName);;
-    //     return userService.save(usuario);
-    // }
 }

@@ -9,6 +9,8 @@ import static mestoribios.proyecto.config.GlobalConstants.DB_CHAR_LENGTH;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 // import org.graalvm.compiler.lir.LIRInstruction.Use;
 
 @Entity
@@ -23,6 +25,7 @@ public class User {
     @Column(name = "name", length = DB_CHAR_LENGTH, nullable = false)
     private String name;
 
+    @JsonIgnore
     @Column(name = "password", nullable = false)
     private String password;
 
