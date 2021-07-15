@@ -1,8 +1,6 @@
 package mestoribios.proyecto.data.entities;
 import java.util.Map;
 
-import mestoribios.proyecto.data.entities.Classroom;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;

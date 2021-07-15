@@ -1,6 +1,5 @@
 package mestoribios.proyecto.controller;
 
-import java.io.IOException;
 import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,8 +56,7 @@ public class WhiteListController {
     }
 
     @PostMapping("/datatable")
-    public ResponseEntity<?>getUsers() throws IOException
-    {
+    public ResponseEntity<?>getUsers() {
         return new ResponseEntity(userService.getData(), HttpStatus.OK);
     }
 }

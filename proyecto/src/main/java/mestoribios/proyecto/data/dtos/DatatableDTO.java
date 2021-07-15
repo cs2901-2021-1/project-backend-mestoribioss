@@ -10,7 +10,9 @@ public class DatatableDTO {
     private Integer recordsTotal;
     private Integer recordsFiltered;
 
-    public DatatableDTO(){}
+    public DatatableDTO(){
+        //constructor vacio
+    }
 
     public List<User> getData() {
         return data;

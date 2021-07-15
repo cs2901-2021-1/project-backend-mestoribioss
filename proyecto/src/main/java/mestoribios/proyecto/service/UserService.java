@@ -50,7 +50,7 @@ public class UserService {
     // Añadir a la tabla usuario para que tenga permiso
     public User save(UserDTO userDTO){
         var user = new User();
-        user.setPassword(passwordEncoder.encode(env.getProperty("secretPsw").toString()));
+        user.setPassword(passwordEncoder.encode(env.getProperty("secretPsw")));
         return modify(user, userDTO);
     }
 

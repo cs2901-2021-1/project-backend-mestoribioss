@@ -21,16 +21,11 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import mestoribios.proyecto.security.jwt.JwtEntryPoint;
 import mestoribios.proyecto.security.jwt.JwtTokenFilter;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig  extends WebSecurityConfigurerAdapter{
-    
-    private final static Logger logger = LoggerFactory.getLogger(WebSecurityConfig.class);
-    
+
     @Autowired
     UserDetailsServiceImpl userDetailsServiceImpl;
 

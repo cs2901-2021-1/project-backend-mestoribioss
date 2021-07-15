@@ -1,9 +1,6 @@
 package mestoribios.proyecto.data.entities;
 import java.util.List;
 
-import mestoribios.proyecto.data.entities.Classroom;
-import mestoribios.proyecto.data.entities.Course;
-
 import java.util.ArrayList;
 
 public class DistributionResources

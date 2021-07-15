@@ -11,7 +11,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.stereotype.Service;
 
 import mestoribios.proyecto.data.dtos.TokenDTO;
-import mestoribios.proyecto.data.dtos.UserDTO;
 import mestoribios.proyecto.data.entities.User;
 import mestoribios.proyecto.data.repositories.UserRepository;
 import mestoribios.proyecto.security.jwt.JwtProvider;
@@ -19,8 +18,6 @@ import mestoribios.proyecto.security.jwt.JwtProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import mestoribios.proyecto.security.UserPrincipal;
-
 
 
 @Service
@@ -41,7 +38,7 @@ public class AuthService {
 
     public TokenDTO login(User user){
         Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(user.getEmail(), env.getProperty("secretPsw").toString()));
+                new UsernamePasswordAuthenticationToken(user.getEmail(), env.getProperty("secretPsw")));
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = jwtProvider.generateToken(authentication);
         TokenDTO tokenDto = new TokenDTO();

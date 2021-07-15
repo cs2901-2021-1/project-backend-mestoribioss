@@ -5,18 +5,18 @@ public class Classroom
     private Integer id;
     private String tipo;
     private Integer aforo;
-    private String [][] TimeSchedule;
+    private String [][] timeSchedule;
 
     Classroom(){
-        TimeSchedule = new String[15][6];
+        timeSchedule = new String[15][6];
     }
 
     public String [][] getTimeSchedule() {
-        return TimeSchedule;
+        return timeSchedule;
     }
 
     public void setTimeSchedule(String [][] timeSchedule) {
-        this.TimeSchedule = timeSchedule;
+        this.timeSchedule = timeSchedule;
     }
 
     public Integer getAforo() {

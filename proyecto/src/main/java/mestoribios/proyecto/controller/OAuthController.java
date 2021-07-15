@@ -39,17 +39,17 @@ public class OAuthController {
     AuthService authService;
 
     @PostMapping("/google")
-    public ResponseEntity<?> google(@RequestBody TokenDTO TokenDTO) {
+    public ResponseEntity<?> google(@RequestBody TokenDTO tokenDTO) {
         HashMap<String, Object> map = new HashMap<>();
         try{
         final NetHttpTransport transport = new NetHttpTransport();
         final JacksonFactory jacksonFactory = JacksonFactory.getDefaultInstance();
         GoogleIdTokenVerifier.Builder verifier =
                  new GoogleIdTokenVerifier.Builder(transport, jacksonFactory)
-                 .setAudience(Collections.singletonList(env.getProperty("google.clientId").toString()));
-        final GoogleIdToken googleIdToken = GoogleIdToken.parse(verifier.getJsonFactory(), TokenDTO.getValue());
+                 .setAudience(Collections.singletonList(env.getProperty("google.clientId")));
+        final GoogleIdToken googleIdToken = GoogleIdToken.parse(verifier.getJsonFactory(), tokenDTO.getValue());
         final GoogleIdToken.Payload payload = googleIdToken.getPayload();
-        User user= new User();
+        var user = new User();
         if(userService.existsEmail(payload.getEmail())){
             user=userService.getByEmail(payload.getEmail()).get();
             TokenDTO tokenRes = authService.login(user);

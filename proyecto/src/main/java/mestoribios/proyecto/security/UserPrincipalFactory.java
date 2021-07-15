@@ -11,7 +11,7 @@ import mestoribios.proyecto.data.entities.User;
 public class UserPrincipalFactory {
 
     public static UserPrincipal build (User user){
-        List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
+        List<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority(user.getRole()));
         return new UserPrincipal(user.getEmail(),user.getPassword(),authorities);
         
