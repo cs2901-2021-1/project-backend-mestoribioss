@@ -5,7 +5,7 @@ services:
     image: 'postgres:13.1-alpine'
     volumes:
         - postgres-vol:/var/lib/postgresql/data
-    container_name: dbsoftware
+    container_name: dbsoftware1
     restart: always
     ports:
         - "3306:5432"
@@ -16,7 +16,7 @@ services:
       - POSTGRES_PASSWORD=root
       - POSTGRES_DB=db_planeamiento
   pgadmin:
-    container_name: pgadmin4_container_planeamiento
+    container_name: pgadmin4_container_planeamiento1
     image: dpage/pgadmin4
     restart: always
     environment:
