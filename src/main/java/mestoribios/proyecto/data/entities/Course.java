@@ -1,68 +1,73 @@
 package mestoribios.proyecto.data.entities;
-import java.util.HashMap;
-import java.util.Map;
 
 public class Course {
+    private String name;
+    private int theoHours;
+    private int labHours;
+    private int theoSections;
+    private int labSections;
+    private int theoCapacity;
+    private int labCapacity;
+    private String classroomTheoType;
+    private String classroomLabType;
+    private String major;
+    private int semester;
 
-    String nombre;
-    int horasTeo;
-    int horasLab;
-    int secciones;
-    String classroomTeoType;
-    String classroomLabType;
-    //int = ciclo
-    Map<String, Integer> majorCourses;
-
-    Course(){
-        this.majorCourses = new HashMap<>();
-    };
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public Course() {
+        // Course default constructor
     }
 
-    public void setHorasTeo(int horas) {
-        this.horasTeo = horas;
+    public Course(String name, int theoHours, int labHours, int theoSections, int labSections, int theoCapacity,
+           int labCapacity,
+           String classroomTheoType,
+           String classroomLabType, String major, int semester) {
+        this.name = name;
+        this.theoHours = theoHours;
+        this.labHours = labHours;
+        this.theoSections = theoSections;
+        this.labSections = labSections;
+        this.theoCapacity = theoCapacity;
+        this.labCapacity = labCapacity;
+        this.classroomTheoType = classroomTheoType;
+        this.classroomLabType = classroomLabType;
+        this.major = major;
+        this.semester = semester;
     }
 
-    public void setHorasLab(int horas) {
-        this.horasLab = horas;
+    public String getName() {
+        return name;
     }
 
-    public void setSecciones(int secciones) {
-        this.secciones = secciones;
+    public String getMajor() {
+        return major;
     }
 
-    public void setClassroomTeoType(String classroomtype) {
-        this.classroomTeoType = classroomtype;
+    public int getSemester() {
+        return semester;
     }
 
-    public void setClassroomLabType(String classroomtype) {
-        this.classroomLabType = classroomtype;
+    public int getTheoHours() {
+        return theoHours;
     }
 
-    public String getNombre() {
-        return this.nombre;
+    public int getLabHours() {
+        return labHours;
     }
 
-    public int getHorasTeo() {
-        return this.horasTeo;
+    public int getTheoSections() {
+        return theoSections;
     }
 
-    public int getHorasLab() {
-        return this.horasLab;
+    public int getLabSections() {
+        return labSections;
     }
 
-    public int getSecciones() {
-        return this.secciones;
+    public String getClassroomTheoType() {
+        return classroomTheoType;
     }
 
-    String setClassroomTeoType() {
-        return this.classroomTeoType;
+    public String getClassroomLabType() {
+        return classroomLabType;
     }
 
-    String setClassroomLabType() {
-        return this.classroomLabType;
-    }
-
-}
+};
