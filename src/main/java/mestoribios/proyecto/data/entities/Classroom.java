@@ -61,15 +61,15 @@ public class Classroom
     boolean getExist() {
         return this.exist;
     }
-
-    // Horario de ese salón
+    
     void printTimeSchedule() {
-        String strTimeSchedule = name;
+        String strTimeSchedule = name + "\n";
         for (int i = 0; i < 15; ++i) {
             strTimeSchedule += Integer.toString(i+7)+":00";
             for (int j = 0; j < 6; ++j) {
                 strTimeSchedule += "\t"+timeSchedule[i][j].name+","+Integer.toString(timeSchedule[i][j].section)+","+timeSchedule[i][j].major+"\t";
             }
+            strTimeSchedule += "\n";
         }
         logger.info(strTimeSchedule);
     }

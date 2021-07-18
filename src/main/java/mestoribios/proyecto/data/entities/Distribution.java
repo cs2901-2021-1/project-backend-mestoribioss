@@ -50,14 +50,12 @@ public class Distribution {
             a.fillHour(b, i, day, section);
             updateClassroom(a);
         }
-        float key = beginTime + day * 0.10f;
+        float key = beginTime + day * 0.01f;
         Map<Integer, Boolean> crosses = new HashMap<>();
         crosses.put(section, true);
         DistributionElem elem = new DistributionElem(b.getMajor(), b.getSemester(), crosses);
         if (crossingOfSchedules.containsKey(key)) {
-            ArrayList<DistributionElem> aux = crossingOfSchedules.get(key);
-            aux.add(elem);
-            crossingOfSchedules.put(key, aux);
+            crossingOfSchedules.get(key).add(elem);
         }
         else {
             ArrayList<DistributionElem> vec = new ArrayList<>();
@@ -72,19 +70,19 @@ public class Distribution {
     }
 
     public static boolean notInDays(int j, ArrayList<Integer> days) {
-        for (Integer e : days) {
+        for (int e : days) {
             if (e == j) return false;
         }
         return true;
     }
 
     public boolean checkCrossing(int i, int j, int section, Course a) {
-        float key = i + j * 0.10f;
+        float key = i + j * 0.01f;
         if (!crossingOfSchedules.containsKey(key)) return true;
         ArrayList<DistributionElem> vec = crossingOfSchedules.get(key);
         for (DistributionElem v: vec) {
             if (v.semester == a.getSemester() && v.major == a.getMajor()) {
-                if (!v.crosses.containsKey(section)) return false;
+                if (v.crosses.containsKey(section)) return false;
             }
         }
         return true;
@@ -128,7 +126,9 @@ public class Distribution {
         if (theo) type = a.getClassroomTheoType();
         else type = a.getClassroomLabType();
         Classroom newClassroom = new Classroom(idForNewClassrooms, nameForNewClassrooms + Integer.toString(idForNewClassrooms), type);
+        ++idForNewClassrooms;
         newClassroom.setExist();
+        newClassroom.setUsed();
         totalClassrooms.add(newClassroom);
         available = makeMyPair(a, hours, days, n, m, theo, newClassroom, section);
         return available;
@@ -212,15 +212,19 @@ public class Distribution {
 
     public void showDistribution() {
         logger.info("Existing Classrooms");
-        for (int i : existingClassroomsNeeded.values()) {
-            logger.info(Integer.toString(i));
+        for (Map.Entry<String, Integer> entry : existingClassroomsNeeded.entrySet()) {
+            logger.info(entry.getKey() + ": " + entry.getValue());
         }
         logger.info("Non-Existing Classrooms");
-        for (int i : notExistingClassroomsNeeded.values()) {
-            logger.info(Integer.toString(i));
+        for (Map.Entry<String, Integer> entry : notExistingClassroomsNeeded.entrySet()) {
+            logger.info(entry.getKey() + ": " + entry.getValue());
         }
     }
 
+    public int getSalonesFaltantes() {
+        logger.info(Integer.toString(idForNewClassrooms));
+        return (idForNewClassrooms+1);
+    }
 
     public void showDetailedDistribution() {
         for (Classroom classroom : classroomsNeeded) {
