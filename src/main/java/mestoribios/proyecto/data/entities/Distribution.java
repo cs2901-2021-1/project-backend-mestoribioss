@@ -1,5 +1,6 @@
 package mestoribios.proyecto.data.entities;
 
+import java.util.List;
 import java.util.logging.Logger;
 import java.util.HashMap;
 import java.util.Map;
@@ -225,6 +226,28 @@ public class Distribution {
         for (Map.Entry<String, Integer> entry : notExistingClassroomsNeeded.entrySet()) {
             logger.info(entry.getKey() + ": " + entry.getValue());
         }
+    }
+
+    public ArrayList<HashMap> showDistributionFront() {
+        logger.info("Existing Classrooms");
+        HashMap existentes = new HashMap();
+        HashMap noExistentes = new HashMap();
+        for (Map.Entry<String, Integer> entry : existingClassroomsNeeded.entrySet()) {
+            existentes.put(entry.getKey(), entry.getValue());
+            logger.info(entry.getKey() + ": " + entry.getValue());
+        }
+        logger.info("Non-Existing Classrooms");
+        for (Map.Entry<String, Integer> entry : notExistingClassroomsNeeded.entrySet()) {
+            noExistentes.put(entry.getKey(), entry.getValue());
+            logger.info(entry.getKey() + ": " + entry.getValue());
+        }
+
+        ArrayList<HashMap> res = new ArrayList<HashMap>();
+
+        res.add(existentes);
+        res.add(noExistentes);
+
+        return res;
     }
 
     public void showDetailedDistribution() {

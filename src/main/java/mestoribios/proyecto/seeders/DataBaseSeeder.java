@@ -53,6 +53,7 @@ public class DataBaseSeeder {
         List<User> users= new ArrayList<>();
         String password=passwordEncoder.encode(env.getProperty("secretPsw"));
         users.add(new User("jorge.vasquez@utec.edu.pe",password,"admin","Jorge","Vásquez"));
+        users.add(new User("macarena.oyague@utec.edu.pe",password,"admin","Jorge","Vásquez"));
         return users;
     }
 
