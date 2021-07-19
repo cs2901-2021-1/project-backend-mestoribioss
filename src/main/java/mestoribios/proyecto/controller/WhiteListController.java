@@ -40,9 +40,15 @@ public class WhiteListController {
     @PutMapping("/update/{id}")
     public ResponseEntity<HashMap<String, Object>> updateUser(@RequestBody UserDTO userDTO, @PathVariable Long id){
         HashMap<String, Object> map = new HashMap<>();
-        map.put("data", userService.updateUser(userDTO,id));
-        map.put("message", "Usuario actualizado!");
-        return new ResponseEntity<>(map, HttpStatus.OK);
+        try{
+            map.put("data", userService.updateUser(userDTO,id));
+            map.put("message", "Usuario actualizado!");
+            return new ResponseEntity<>(map, HttpStatus.OK);
+        }
+        catch(Exception e){
+            map.put("error", e.getMessage());
+            return new ResponseEntity<>(map, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
 

@@ -31,11 +31,11 @@ public class UserService {
     private UserRepository userRepository;
 
     private User modify(User user, UserDTO userDTO){
-        user.setLastName(userDTO.getLastNameDTO());
-        user.setName(userDTO.getNameDTO());
-        user.setRole(userDTO.getRoleDTO());
-        user.setStatus(userDTO.getStatusDTO());
-        user.setEmail(userDTO.getEmailDTO());
+        user.setLastName(userDTO.getLastName());
+        user.setName(userDTO.getName());
+        user.setRole(userDTO.getRole());
+        user.setStatus(userDTO.getStatus());
+        user.setEmail(userDTO.getEmail());
         return userRepository.save(user);
     }
 

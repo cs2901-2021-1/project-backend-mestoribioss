@@ -14,7 +14,9 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class JwtEntryPoint implements AuthenticationEntryPoint {
-
+    
+    private static final Logger logger = LoggerFactory.getLogger(JwtEntryPoint.class);
+    
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException e) throws IOException, ServletException 
     {
@@ -22,6 +24,5 @@ public class JwtEntryPoint implements AuthenticationEntryPoint {
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "credenciales erróneas");
     }
 
-    private static final Logger logger = LoggerFactory.getLogger(JwtEntryPoint.class);
 
 }
