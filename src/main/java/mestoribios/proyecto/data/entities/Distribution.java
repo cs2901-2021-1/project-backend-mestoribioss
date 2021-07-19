@@ -5,16 +5,15 @@ import java.util.logging.Logger;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ArrayList;
-import java.lang.Math;
 
 import mestoribios.proyecto.config.Pair;
 
 public class Distribution {
-    private Map<String, ArrayList<Course>> courses;
-    private ArrayList<Classroom> totalClassrooms;
+    private Map<String, List<Course>> courses;
+    private List<Classroom> totalClassrooms;
     private Map<String, Integer> existingClassroomsNeeded;
     private Map<String, Integer> notExistingClassroomsNeeded;
-    private ArrayList<Classroom> classroomsNeeded;
+    private List<Classroom> classroomsNeeded;
     private Map<Float, ArrayList<DistributionElem>> crossingOfSchedules;
     private String nameForNewClassrooms = "NEW";
     private int idForNewClassrooms;
@@ -31,12 +30,12 @@ public class Distribution {
 
     public Distribution() {
         // Distribution default constructor
-        courses = new HashMap<String, ArrayList<Course>>();
+        courses = new HashMap<>();
         totalClassrooms  = new ArrayList<>();
         reset();
     }
 
-    public Distribution(Map<String, ArrayList<Course>> courses, ArrayList<Classroom> totalClassrooms) {
+    public Distribution(Map<String, List<Course>> courses, List<Classroom> totalClassrooms) {
         this.courses = courses;
         this.totalClassrooms = totalClassrooms;
         reset();
@@ -70,11 +69,11 @@ public class Distribution {
     }
 
     public static boolean checkTypeOfClassroom(boolean theo, Classroom c, Course a) {
-        if (theo) return c.getType() == a.getClassroomTheoType();
-        else return c.getType() == a.getClassroomLabType();
+        if (theo) return c.getType().equals(a.getClassroomTheoType());
+        else return c.getType().equals(a.getClassroomLabType());
     }
 
-    public static boolean notInDays(int j, ArrayList<Integer> days) {
+    public static boolean notInDays(int j, List<Integer> days) {
         for (int e : days) {
             if (e == j) return false;
         }
@@ -86,28 +85,29 @@ public class Distribution {
         if (!crossingOfSchedules.containsKey(key)) return true;
         ArrayList<DistributionElem> vec = crossingOfSchedules.get(key);
         for (DistributionElem v: vec) {
-            if (v.semester == a.getSemester() && v.major == a.getMajor()) {
-                if (v.crosses.containsKey(section)) return false;
+            if (v.semester == a.getSemester() && v.major.equals(a.getMajor()) && v.crosses.containsKey(section)) {
+                return false;
             }
         }
         return true;
     }
 
     public Pair<Classroom, Pair<Integer, Integer>>
-    makeMyPair(Course a, int hours, ArrayList<Integer> days, int n,
+    makeMyPair(Course a, int hours, List<Integer> days, int n,
                int m, boolean theo, Classroom c, int section) {
         Pair<Classroom, Pair<Integer, Integer>> available = new Pair<>(new Classroom(), new Pair<>());
         for (int i = 0; i < n; ++i) {
             for (int j = 0; j < m; ++j) {
-                if (c.checkAvailability(i, j) && notInDays(j, days) && checkTypeOfClassroom(theo, c, a) &&
-                    checkCrossing(i, j, section, a)) {
+                var avail = c.checkAvailability(i, j);
+                var notdays = notInDays(j, days);
+                var typeclass = checkTypeOfClassroom(theo, c, a);
+                var crossing = checkCrossing(i, j, section, a);
+                if (avail && notdays && typeclass && crossing) {
                     available.setFirst(c);
                     available.getSecond().setFirst(i);
                     available.getSecond().setSecond(j);
                     if (hours == 1) return available;
-                    else {
-                        if (c.checkAvailability(i + 1, j)) return available;
-                    }
+                    else if (c.checkAvailability(i + 1, j)) return available;
                 }
             }
         }
@@ -118,7 +118,7 @@ public class Distribution {
     }
 
     public Pair<Classroom, Pair<Integer, Integer>>
-    function(Course a, int hours, ArrayList<Integer> days, int n,
+    function(Course a, int hours, List<Integer> days, int n,
              int m, boolean theo, int section) {
         Pair<Classroom, Pair<Integer, Integer>> available = new Pair<>();
         for (Classroom c : totalClassrooms) {
@@ -140,21 +140,23 @@ public class Distribution {
     }
 
     public Pair<Classroom, Pair<Integer, Integer>>
-    checkForClassroomAvailable(Course a, int hours, ArrayList<Integer> days, boolean theo, int section) {
-        Pair<Classroom, Pair<Integer, Integer>> available = new Pair<>();
+    checkForClassroomAvailable(Course a, int hours, List<Integer> days, boolean theo, int section) {
+        Pair<Classroom, Pair<Integer, Integer>> available;
         boolean first_year;
         if (a.getSemester() <= 2) first_year = true;
         else first_year = false;
-        if (first_year) {
+        if (first_year)
             available = function(a, hours, days, 10, 6, theo, section);
-        } else {
+        else
             available = function(a, hours, days, 14, 6, theo, section);
-        }
         return available;
     }
 
     public void allocateCourse(Course a) {
-        int i, j, classes, hours;
+        int i;
+        int j;
+        int classes;
+        int hours;
         Pair<Classroom, Pair<Integer, Integer>> b;
         for (i = 0; i < a.getTheoSections(); ++i) {
             if (a.getTheoHours() % 2 == 1) classes = (a.getTheoHours() / 2) + 1;
@@ -189,29 +191,24 @@ public class Distribution {
     public void generateDistribution() {
         if (modify) return;
         modify = true;
-        for (ArrayList<Course> course : courses.values()) {
-            for (int j = 0; j < course.size(); ++j) {
+        for (List<Course> course : courses.values()) {
+            for (int j = 0; j < course.size(); ++j)
                 allocateCourse(course.get(j));
-            }
         }
         for (Classroom classroom : totalClassrooms) {
             if (classroom.getUsed()) {
                 classroomsNeeded.add(classroom);
                 if (classroom.getExist()) {
-                    if (existingClassroomsNeeded.containsKey(classroom.getType())) {
+                    if (existingClassroomsNeeded.containsKey(classroom.getType()))
                         existingClassroomsNeeded.put(classroom.getType(), existingClassroomsNeeded.get(classroom.getType())+1);
-                    }
-                    else {
+                    else
                         existingClassroomsNeeded.put(classroom.getType(), 1);
-                    }
                 } 
                 else {
-                    if (notExistingClassroomsNeeded.containsKey(classroom.getType())) {
+                    if (notExistingClassroomsNeeded.containsKey(classroom.getType()))
                         notExistingClassroomsNeeded.put(classroom.getType(), notExistingClassroomsNeeded.get(classroom.getType())+1);
-                    }
-                    else {
+                    else
                         notExistingClassroomsNeeded.put(classroom.getType(), 1);
-                    }
                 }
             }            
         }
@@ -229,20 +226,14 @@ public class Distribution {
     }
 
     public ArrayList<HashMap> showDistributionFront() {
-        logger.info("Existing Classrooms");
         HashMap existentes = new HashMap();
         HashMap noExistentes = new HashMap();
-        for (Map.Entry<String, Integer> entry : existingClassroomsNeeded.entrySet()) {
+        for (Map.Entry<String, Integer> entry : existingClassroomsNeeded.entrySet())
             existentes.put(entry.getKey(), entry.getValue());
-            logger.info(entry.getKey() + ": " + entry.getValue());
-        }
-        logger.info("Non-Existing Classrooms");
-        for (Map.Entry<String, Integer> entry : notExistingClassroomsNeeded.entrySet()) {
+        for (Map.Entry<String, Integer> entry : notExistingClassroomsNeeded.entrySet())
             noExistentes.put(entry.getKey(), entry.getValue());
-            logger.info(entry.getKey() + ": " + entry.getValue());
-        }
 
-        ArrayList<HashMap> res = new ArrayList<HashMap>();
+        ArrayList<HashMap> res = new ArrayList<>();
 
         res.add(existentes);
         res.add(noExistentes);
@@ -258,7 +249,7 @@ public class Distribution {
 
     public void setNumberStudents(ArrayList<Pair<Integer, String>> numberStudents) {
         for (Pair<Integer,String> pair : numberStudents) {
-            ArrayList<Course> coursesFromMajor = courses.get(pair.getSecond());
+            List<Course> coursesFromMajor = courses.get(pair.getSecond());
             for (Course courseFromMajor : coursesFromMajor) {
                 if (courseFromMajor.getSemester() == 1) {
                     float num = (float) pair.getFirst();

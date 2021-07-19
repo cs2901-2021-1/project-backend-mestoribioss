@@ -2,6 +2,7 @@ package mestoribios.proyecto.controller;
 
 import java.util.HashMap;
 
+import mestoribios.proyecto.data.dtos.DatatableDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,26 +38,24 @@ public class WhiteListController {
 
     
     @PutMapping("/update/{id}")
-    public ResponseEntity<?> updateUser(@RequestBody UserDTO userDTO, @PathVariable Long id){
+    public ResponseEntity<HashMap<String, Object>> updateUser(@RequestBody UserDTO userDTO, @PathVariable Long id){
         HashMap<String, Object> map = new HashMap<>();
         map.put("data", userService.updateUser(userDTO,id));
         map.put("message", "Usuario actualizado!");
-
-        return new ResponseEntity(map, HttpStatus.OK);
+        return new ResponseEntity<>(map, HttpStatus.OK);
     }
 
 
     @GetMapping("/show/{id}")
-    public ResponseEntity<?> getUserById(@PathVariable Long id){
+    public ResponseEntity<HashMap<String, Object>> getUserById(@PathVariable Long id){
         HashMap<String, Object> map = new HashMap<>();
         map.put("data", userService.findOneById(id));
         map.put("message", "Usuario obtenido");
-
-        return new ResponseEntity(map, HttpStatus.OK);
+        return new ResponseEntity<>(map, HttpStatus.OK);
     }
 
     @PostMapping("/datatable")
-    public ResponseEntity<?>getUsers() {
-        return new ResponseEntity(userService.getData(), HttpStatus.OK);
+    public ResponseEntity<DatatableDTO>getUsers() {
+        return new ResponseEntity<>(userService.getData(), HttpStatus.OK);
     }
 }

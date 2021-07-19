@@ -5,7 +5,6 @@ import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import mestoribios.proyecto.data.dtos.TokenDTO;
-import mestoribios.proyecto.data.entities.User;
 import mestoribios.proyecto.service.AuthService;
 import mestoribios.proyecto.service.UserService;
 
@@ -39,7 +38,7 @@ public class OAuthController {
     AuthService authService;
 
     @PostMapping("/google")
-    public ResponseEntity<?> google(@RequestBody TokenDTO tokenDTO) {
+    public ResponseEntity<HashMap<String, Object>> google(@RequestBody TokenDTO tokenDTO) {
         HashMap<String, Object> map = new HashMap<>();
         try{
         final NetHttpTransport transport = new NetHttpTransport();
@@ -49,35 +48,33 @@ public class OAuthController {
                  .setAudience(Collections.singletonList(env.getProperty("google.clientId")));
         final GoogleIdToken googleIdToken = GoogleIdToken.parse(verifier.getJsonFactory(), tokenDTO.getValue());
         final GoogleIdToken.Payload payload = googleIdToken.getPayload();
-        var user = new User();
         if(userService.existsEmail(payload.getEmail())){
-            user=userService.getByEmail(payload.getEmail()).get();
+            var user = userService.getByEmail(payload.getEmail()).get();
             TokenDTO tokenRes = authService.login(user);
             map.put("message","Usuario inicio sessión satisfactoriamente");
             map.put("token",tokenRes.getValue());
             map.put("user",user);
-            return new ResponseEntity(map, HttpStatus.OK);
+            return new ResponseEntity<>(map, HttpStatus.OK);
         }else{
             map.put("message", "Usuario no se encuentra en la WhiteList");
-            return new ResponseEntity(map,HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(map,HttpStatus.UNAUTHORIZED);
         }
         
     }catch(Exception e){
         map.put("error", e.getMessage());
-        return new ResponseEntity(map,HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(map,HttpStatus.BAD_REQUEST);
         }
     }
 
     @GetMapping("/google/profile")
-    public ResponseEntity<?> googleProfile() {
+    public ResponseEntity<HashMap<String, Object>> googleProfile() {
         HashMap<String, Object> map = new HashMap<>();
         try{
             map.put("user",authService.getProfile());
-            // map.put("principal",principal.getName());
-            return new ResponseEntity(map, HttpStatus.OK);
+            return new ResponseEntity<>(map, HttpStatus.OK);
         }catch(Exception e){
             map.put("error", e.getMessage());
-            return new ResponseEntity(map,HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(map,HttpStatus.BAD_REQUEST);
             }
     }
 

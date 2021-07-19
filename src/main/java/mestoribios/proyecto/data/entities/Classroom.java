@@ -1,15 +1,12 @@
 package mestoribios.proyecto.data.entities;
-import java.util.logging.Logger;
 
-public class Classroom
-{
+public class Classroom {
     private Integer id;
     private String name;
     private String type;
     private boolean used = false;
     private boolean exist = true;
     private CourseElem[][] timeSchedule;
-    static final Logger logger = Logger.getLogger(Classroom.class.getName());
 
     Classroom(){
         timeSchedule = new CourseElem[15][6];
@@ -34,7 +31,7 @@ public class Classroom
     }
 
     boolean checkAvailability(int i, int j) {
-        return timeSchedule[i][j].name == "none" && timeSchedule[i][j].major == "none" &&
+        return timeSchedule[i][j].name.equals("none") && timeSchedule[i][j].major.equals("none") &&
                timeSchedule[i][j].semester == -1 && timeSchedule[i][j].section == 0;
     }
 
@@ -62,15 +59,14 @@ public class Classroom
         return this.exist;
     }
     
-    void printTimeSchedule() {
-        String strTimeSchedule = name + "\n";
+    String printTimeSchedule() {
+        StringBuilder strTimeSchedule = new StringBuilder(name + "\n");
         for (int i = 0; i < 15; ++i) {
-            strTimeSchedule += Integer.toString(i+7)+":00";
-            for (int j = 0; j < 6; ++j) {
-                strTimeSchedule += "\t"+timeSchedule[i][j].name+","+Integer.toString(timeSchedule[i][j].section)+","+timeSchedule[i][j].major+"\t";
-            }
-            strTimeSchedule += "\n";
+            strTimeSchedule.append(Integer.toString(i + 7)).append(":00");
+            for (int j = 0; j < 6; ++j)
+                strTimeSchedule.append("\t").append(timeSchedule[i][j].name).append(",").append(Integer.toString(timeSchedule[i][j].section)).append(",").append(timeSchedule[i][j].major).append("\t");
+            strTimeSchedule.append("\n");
         }
-        logger.info(strTimeSchedule);
+        return strTimeSchedule.toString();
     }
 }
