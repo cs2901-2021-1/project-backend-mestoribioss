@@ -1,7 +1,5 @@
 package mestoribios.proyecto.controller;
 
-import mestoribios.proyecto.config.Pair;
-import mestoribios.proyecto.data.entities.Distribution;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,9 +29,9 @@ public class DistributionController {
 
         return new ResponseEntity<>(dummy, HttpStatus.OK);
 
-        //TODO: descomentar cuando ya este arreglado lo de los cursos (da error porq no hay cursos)
-        // no borrar esto
         /*
+        descomentar cuando ya este arreglado lo de los cursos (da error porq no hay cursos)
+        no borrar esto
         Distribution distribution = new Distribution();
         ArrayList <Pair<Integer, String>> lista = new ArrayList<>();
         distributionDTO.forEach(dist -> {

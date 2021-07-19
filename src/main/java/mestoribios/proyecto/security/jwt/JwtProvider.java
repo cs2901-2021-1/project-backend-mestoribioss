@@ -17,25 +17,26 @@ public class JwtProvider {
 
     @Autowired
     Environment env;
-    
+
+    String secret = "jwt.secret";
 
     public String generateToken(Authentication authentication){
         UserPrincipal usuarioPrincipal = (UserPrincipal) authentication.getPrincipal();
         return Jwts.builder().setSubject(usuarioPrincipal.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + Integer.parseInt(env.getProperty("jwt.expiration"))))
-                .signWith(SignatureAlgorithm.HS512, env.getProperty("jwt.secret"))
+                .signWith(SignatureAlgorithm.HS512, env.getProperty(secret))
                 .compact();
     }
 
     public String getEmailFromToken(String token){
-        return Jwts.parser().setSigningKey(env.getProperty("jwt.secret")).parseClaimsJws(token).getBody().getSubject();
+        return Jwts.parser().setSigningKey(env.getProperty(secret)).parseClaimsJws(token).getBody().getSubject();
     }
 
 
     public boolean validateToken(String token){
         try {
-            Jwts.parser().setSigningKey(env.getProperty("jwt.secret")).parseClaimsJws(token);
+            Jwts.parser().setSigningKey(env.getProperty(secret)).parseClaimsJws(token);
             return true;
         }catch (MalformedJwtException | UnsupportedJwtException | ExpiredJwtException | IllegalArgumentException | SignatureException e){
             logger.error("error comprobando el token");
@@ -44,5 +45,5 @@ public class JwtProvider {
         return false;
     }
 
-    private final static Logger logger = LoggerFactory.getLogger(JwtProvider.class);
+    private static final Logger logger = LoggerFactory.getLogger(JwtProvider.class);
 }

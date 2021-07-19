@@ -22,6 +22,6 @@ public class JwtEntryPoint implements AuthenticationEntryPoint {
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "credenciales erróneas");
     }
 
-    private final static Logger logger = LoggerFactory.getLogger(JwtEntryPoint.class);
+    private static final Logger logger = LoggerFactory.getLogger(JwtEntryPoint.class);
 
 }

@@ -106,8 +106,7 @@ public class Distribution {
                     available.setFirst(c);
                     available.getSecond().setFirst(i);
                     available.getSecond().setSecond(j);
-                    if (hours == 1) return available;
-                    else if (c.checkAvailability(i + 1, j)) return available;
+                    if (hours == 1 || c.checkAvailability(i + 1, j)) return available;
                 }
             }
         }
@@ -142,10 +141,10 @@ public class Distribution {
     public Pair<Classroom, Pair<Integer, Integer>>
     checkForClassroomAvailable(Course a, int hours, List<Integer> days, boolean theo, int section) {
         Pair<Classroom, Pair<Integer, Integer>> available;
-        boolean first_year;
-        if (a.getSemester() <= 2) first_year = true;
-        else first_year = false;
-        if (first_year)
+        boolean firstYear;
+        if (a.getSemester() <= 2) firstYear = true;
+        else firstYear = false;
+        if (firstYear)
             available = function(a, hours, days, 10, 6, theo, section);
         else
             available = function(a, hours, days, 14, 6, theo, section);
@@ -159,12 +158,12 @@ public class Distribution {
         int hours;
         Pair<Classroom, Pair<Integer, Integer>> b;
         for (i = 0; i < a.getTheoSections(); ++i) {
-            if (a.getTheoHours() % 2 == 1) classes = (a.getTheoHours() / 2) + 1;
-            else classes = a.getTheoHours()/2;
+            classes = a.getTheoHours() / 2 + 1;
+            classes += a.getTheoHours() % 2;
             for (j = 0; j < classes; ++j) {
                 ArrayList<Integer> days = new ArrayList<>();
-                if (j < a.getTheoHours() / 2) hours = 2;
-                else hours = 1;
+                hours = 1;
+                if (j < a.getTheoHours() / 2) hours += 1;
                 b = checkForClassroomAvailable(a, hours, days, true, i+1);
                 days.add(b.getSecond().getSecond());
                 b.getFirst().setUsed();
@@ -173,12 +172,12 @@ public class Distribution {
             }
         }
         for (i = 0; i < a.getLabSections(); ++i) {
-            if (a.getLabHours() % 2 == 1) classes = a.getLabHours() / 2 + 1;
-            else classes = a.getLabHours()/2;
+            classes = a.getLabHours() / 2;
+            classes += a.getLabHours() % 2;
             for (j = 0; j < classes; ++j) {
                 ArrayList<Integer> days = new ArrayList<>();
-                if (j < a.getLabHours() / 2) hours = 2;
-                else hours = 1;
+                hours = 1;
+                if (j < a.getLabHours() / 2) hours += 1;
                 b = checkForClassroomAvailable(a, hours, days, false, i+1);
                 days.add(b.getSecond().getSecond());
                 b.getFirst().setUsed();
@@ -188,28 +187,32 @@ public class Distribution {
         }
     }
 
+    private void existingClassroomQuery(Classroom classroom){
+        if (existingClassroomsNeeded.containsKey(classroom.getType()))
+            existingClassroomsNeeded.put(classroom.getType(), existingClassroomsNeeded.get(classroom.getType())+1);
+        else
+            existingClassroomsNeeded.put(classroom.getType(), 1);
+    }
+
+    private void notExistingClassroomQuery(Classroom classroom){
+        if (notExistingClassroomsNeeded.containsKey(classroom.getType()))
+            notExistingClassroomsNeeded.put(classroom.getType(), notExistingClassroomsNeeded.get(classroom.getType())+1);
+        else
+            notExistingClassroomsNeeded.put(classroom.getType(), 1);
+    }
+
     public void generateDistribution() {
         if (modify) return;
         modify = true;
-        for (List<Course> course : courses.values()) {
-            for (int j = 0; j < course.size(); ++j)
-                allocateCourse(course.get(j));
-        }
+        for (List<Course> course : courses.values())
+            for (Course value : course) allocateCourse(value);
         for (Classroom classroom : totalClassrooms) {
             if (classroom.getUsed()) {
                 classroomsNeeded.add(classroom);
-                if (classroom.getExist()) {
-                    if (existingClassroomsNeeded.containsKey(classroom.getType()))
-                        existingClassroomsNeeded.put(classroom.getType(), existingClassroomsNeeded.get(classroom.getType())+1);
-                    else
-                        existingClassroomsNeeded.put(classroom.getType(), 1);
-                } 
-                else {
-                    if (notExistingClassroomsNeeded.containsKey(classroom.getType()))
-                        notExistingClassroomsNeeded.put(classroom.getType(), notExistingClassroomsNeeded.get(classroom.getType())+1);
-                    else
-                        notExistingClassroomsNeeded.put(classroom.getType(), 1);
-                }
+                if (classroom.getExist())
+                    existingClassroomQuery(classroom);
+                else
+                    notExistingClassroomQuery(classroom);
             }            
         }
     }
@@ -225,15 +228,15 @@ public class Distribution {
         }
     }
 
-    public ArrayList<HashMap> showDistributionFront() {
-        HashMap existentes = new HashMap();
-        HashMap noExistentes = new HashMap();
+    public List<HashMap<String, Integer>> showDistributionFront() {
+        HashMap<String, Integer> existentes = new HashMap<>();
+        HashMap<String, Integer> noExistentes = new HashMap<>();
         for (Map.Entry<String, Integer> entry : existingClassroomsNeeded.entrySet())
             existentes.put(entry.getKey(), entry.getValue());
         for (Map.Entry<String, Integer> entry : notExistingClassroomsNeeded.entrySet())
             noExistentes.put(entry.getKey(), entry.getValue());
 
-        ArrayList<HashMap> res = new ArrayList<>();
+        List<HashMap<String, Integer>> res = new ArrayList<>();
 
         res.add(existentes);
         res.add(noExistentes);
@@ -247,12 +250,12 @@ public class Distribution {
         }
     }
 
-    public void setNumberStudents(ArrayList<Pair<Integer, String>> numberStudents) {
+    public void setNumberStudents(List<Pair<Integer, String>> numberStudents) {
         for (Pair<Integer,String> pair : numberStudents) {
             List<Course> coursesFromMajor = courses.get(pair.getSecond());
             for (Course courseFromMajor : coursesFromMajor) {
                 if (courseFromMajor.getSemester() == 1) {
-                    float num = (float) pair.getFirst();
+                    float num = pair.getFirst();
                     courseFromMajor.setLabSections(courseFromMajor.getLabSections() + (int) (Math.ceil(num/courseFromMajor.getLabCapacity())));
                     courseFromMajor.setTheoSections(courseFromMajor.getTheoSections() + (int) (Math.ceil(num/courseFromMajor.getTheoCapacity())));
                 }

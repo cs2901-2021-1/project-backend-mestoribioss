@@ -22,7 +22,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        // TODO Auto-generated method stub
         User user= userService.getByEmail(email).orElseThrow(()-> new UsernameNotFoundException("Email no encontrado"));
         return UserPrincipalFactory.build(user);
     }

@@ -1,8 +1,3 @@
-/*- email: string
-- name: string
-- lastName:string
-- status: int
-- role : int */
 package mestoribios.proyecto.data.entities;
 
 import static mestoribios.proyecto.config.GlobalConstants.DB_CHAR_LENGTH;
@@ -10,8 +5,6 @@ import static mestoribios.proyecto.config.GlobalConstants.DB_CHAR_LENGTH;
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
-// import org.graalvm.compiler.lir.LIRInstruction.Use;
 
 @Entity
 @Table(name = "users")

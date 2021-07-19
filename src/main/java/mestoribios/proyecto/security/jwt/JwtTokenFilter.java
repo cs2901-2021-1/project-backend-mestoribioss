@@ -19,16 +19,13 @@ import mestoribios.proyecto.security.UserDetailsServiceImpl;
 
 public class JwtTokenFilter extends OncePerRequestFilter {
 
-    private final static Logger logger = LoggerFactory.getLogger(JwtTokenFilter.class);
-
+    private static final Logger logger = LoggerFactory.getLogger(JwtTokenFilter.class);
 
     @Autowired
     JwtProvider jwtProvider;
 
     @Autowired
     UserDetailsServiceImpl userDetailsServiceImpl;
-
-
 
     @Override
     protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain chain)
