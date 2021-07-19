@@ -70,4 +70,19 @@ public class Course {
         return classroomLabType;
     }
 
+    public int getTheoCapacity() {
+        return theoCapacity;
+    }
+
+    public int getLabCapacity() {
+        return labCapacity;
+    }
+
+    public void setTheoSections(int theoSections) {
+        this.theoSections = theoSections;
+    }
+
+    public void setLabSections(int labSections) {
+        this.labSections = labSections;
+    }
 };

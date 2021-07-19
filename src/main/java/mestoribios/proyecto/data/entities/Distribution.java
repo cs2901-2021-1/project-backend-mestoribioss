@@ -4,6 +4,8 @@ import java.util.logging.Logger;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ArrayList;
+import java.lang.Math;
+
 import mestoribios.proyecto.config.Pair;
 
 public class Distribution {
@@ -14,27 +16,29 @@ public class Distribution {
     private ArrayList<Classroom> classroomsNeeded;
     private Map<Float, ArrayList<DistributionElem>> crossingOfSchedules;
     private String nameForNewClassrooms = "NEW";
-    private int idForNewClassrooms = 0;
+    private int idForNewClassrooms;
+    private boolean modify = false;
     static final Logger logger = Logger.getLogger(Distribution.class.getName());
+
+    private void reset() {
+        idForNewClassrooms = 0;
+        crossingOfSchedules = new HashMap<>();
+        classroomsNeeded = new ArrayList<>();
+        existingClassroomsNeeded = new HashMap<>();
+        notExistingClassroomsNeeded = new HashMap<>();
+    }
 
     public Distribution() {
         // Distribution default constructor
         courses = new HashMap<String, ArrayList<Course>>();
-        crossingOfSchedules = new HashMap<>();
-        classroomsNeeded = new ArrayList<>();
         totalClassrooms  = new ArrayList<>();
-        existingClassroomsNeeded = new HashMap<>();
-        notExistingClassroomsNeeded = new HashMap<>();
+        reset();
     }
 
     public Distribution(Map<String, ArrayList<Course>> courses, ArrayList<Classroom> totalClassrooms) {
         this.courses = courses;
         this.totalClassrooms = totalClassrooms;
-        crossingOfSchedules = new HashMap<>();
-        classroomsNeeded = new ArrayList<>();
-        totalClassrooms  = new ArrayList<>();
-        existingClassroomsNeeded = new HashMap<>();
-        notExistingClassroomsNeeded = new HashMap<>();
+        reset();
     }
 
     public void updateClassroom(Classroom a){
@@ -182,6 +186,8 @@ public class Distribution {
     }
 
     public void generateDistribution() {
+        if (modify) return;
+        modify = true;
         for (ArrayList<Course> course : courses.values()) {
             for (int j = 0; j < course.size(); ++j) {
                 allocateCourse(course.get(j));
@@ -221,14 +227,24 @@ public class Distribution {
         }
     }
 
-    public int getSalonesFaltantes() {
-        logger.info(Integer.toString(idForNewClassrooms));
-        return (idForNewClassrooms+1);
-    }
-
     public void showDetailedDistribution() {
         for (Classroom classroom : classroomsNeeded) {
             classroom.printTimeSchedule();
         }
+    }
+
+    public void setNumberStudents(ArrayList<Pair<Integer, String>> numberStudents) {
+        for (Pair<Integer,String> pair : numberStudents) {
+            ArrayList<Course> coursesFromMajor = courses.get(pair.getSecond());
+            for (Course courseFromMajor : coursesFromMajor) {
+                if (courseFromMajor.getSemester() == 5) {
+                    float num = (float) pair.getFirst();
+                    courseFromMajor.setLabSections(courseFromMajor.getLabSections() + (int) (Math.ceil(num/courseFromMajor.getLabCapacity())));
+                    courseFromMajor.setTheoSections(courseFromMajor.getTheoSections() + (int) (Math.ceil(num/courseFromMajor.getTheoCapacity())));
+                }
+            }
+        }
+        modify = false;
+        reset();
     }
 }
