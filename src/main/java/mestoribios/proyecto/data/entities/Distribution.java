@@ -264,4 +264,9 @@ public class Distribution {
         modify = false;
         reset();
     }
+
+    public int getNotExistingClassroomsNeeded() {
+        logger.info(Integer.toString(notExistingClassroomsNeeded.size()));
+        return notExistingClassroomsNeeded.size();
+    }
 }

@@ -8,21 +8,24 @@ public class Classroom {
     private boolean exist = true;
     private CourseElem[][] timeSchedule;
 
-    Classroom(){
-        timeSchedule = new CourseElem[15][6];
-    }
-
-    Classroom(int id, String name, String type){
-        this.id = id;
-        this.name = name;
-        this.type = type;
-
+    private void fillTimeSchedule() {
         timeSchedule = new CourseElem[15][6];
         for (int i = 0; i < 15; ++i) {
             for (int j = 0; j < 6; ++j) {
                 timeSchedule[i][j] = new CourseElem("none", "none", -1, 0);
             }
         }
+    }
+
+    public Classroom(){
+        fillTimeSchedule();
+    }
+
+    public Classroom(int id, String name, String type){
+        this.id = id;
+        this.name = name;
+        this.type = type;
+        fillTimeSchedule();
     }
 
     void fillHour(Course course, int hour, int day, int i) {
