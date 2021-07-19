@@ -237,7 +237,7 @@ public class Distribution {
         for (Pair<Integer,String> pair : numberStudents) {
             ArrayList<Course> coursesFromMajor = courses.get(pair.getSecond());
             for (Course courseFromMajor : coursesFromMajor) {
-                if (courseFromMajor.getSemester() == 5) {
+                if (courseFromMajor.getSemester() == 1) {
                     float num = (float) pair.getFirst();
                     courseFromMajor.setLabSections(courseFromMajor.getLabSections() + (int) (Math.ceil(num/courseFromMajor.getLabCapacity())));
                     courseFromMajor.setTheoSections(courseFromMajor.getTheoSections() + (int) (Math.ceil(num/courseFromMajor.getTheoCapacity())));
