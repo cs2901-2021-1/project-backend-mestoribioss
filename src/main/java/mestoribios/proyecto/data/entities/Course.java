@@ -85,4 +85,4 @@ public class Course {
     public void setLabSections(int labSections) {
         this.labSections = labSections;
     }
-};
+}

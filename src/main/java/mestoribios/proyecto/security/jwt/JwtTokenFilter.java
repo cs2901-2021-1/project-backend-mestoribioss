@@ -19,7 +19,7 @@ import mestoribios.proyecto.security.UserDetailsServiceImpl;
 
 public class JwtTokenFilter extends OncePerRequestFilter {
 
-    private static final Logger logger = LoggerFactory.getLogger(JwtTokenFilter.class);
+    private static final Logger loggerJwt = LoggerFactory.getLogger(JwtTokenFilter.class);
 
     @Autowired
     JwtProvider jwtProvider;
@@ -40,7 +40,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(auth);
             }
         }catch (Exception e){
-            logger.error("fail en el método doFilter");
+            loggerJwt.error("fail en el método doFilter");
         }
         chain.doFilter(req, res);        
     }

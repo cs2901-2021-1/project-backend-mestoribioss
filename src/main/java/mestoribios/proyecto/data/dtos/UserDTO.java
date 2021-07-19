@@ -11,43 +11,43 @@ public class UserDTO {
         //DEFAULT CONSTRUCTOR
     }
 
-    public String getName() {
+    public String getNameDTO() {
         return name;
     }
 
-    public void setName(String name) {
+    public void setNameDTO(String name) {
         this.name = name;
     }
 
-    public String getLastName() {
+    public String getLastNameDTO() {
         return lastName;
     }
 
-    public void setLastName(String lastName) {
+    public void setLastNameDTO(String lastName) {
         this.lastName = lastName;
     }
 
-    public Integer getStatus() {
+    public Integer getStatusDTO() {
         return status;
     }
 
-    public void setStatus(Integer status) {
+    public void setStatusDTO(Integer status) {
         this.status = status;
     }
 
-    public String getRole() {
+    public String getRoleDTO() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRoleDTO(String role) {
         this.role = role;
     }
 
-    public String getEmail() {
+    public String getEmailDTO() {
         return email;
     }
 
-    public void setEmail(String email) {
+    public void setEmailDTO(String email) {
         this.email = email;
     }
 }

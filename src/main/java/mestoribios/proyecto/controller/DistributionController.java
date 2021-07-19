@@ -17,7 +17,7 @@ public class DistributionController {
     static final Logger logger = Logger.getLogger(DistributionController.class.getName());
 
     @PostMapping
-    public ResponseEntity<?> generateDistribution(@RequestBody List<HashMap<String,String>> distributionDTO) {
+    public ResponseEntity<ArrayList<HashMap<String, String>>> generateDistribution(@RequestBody List<HashMap<String,String>> distributionDTO) {
 
         ArrayList<HashMap<String, String>> dummy = new ArrayList<>();
         HashMap<String, String> h1 = new HashMap<>();
