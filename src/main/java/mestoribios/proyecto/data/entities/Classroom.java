@@ -10,7 +10,6 @@ public class Classroom {
     // private Integer id;
     private String name;
     private String type;
-    private Integer capacity;
     private boolean used = false;
     private boolean exist = true;
     private CourseElem[][] timeSchedule;
@@ -31,20 +30,20 @@ public class Classroom {
     public Classroom(String name, String type, int capacity){
         this.name = name;
         this.type = type;
-        this.capacity = capacity;
         fillTimeSchedule();
     }
 
     public Classroom(ClassroomResponse classroomResponse){
         this.name = classroomResponse.getCodAula();
         this.type = classroomResponse.getTipo();
-        this.capacity = classroomResponse.getCapacity();
+        classroomResponse.getCapacity();
         fillTimeSchedule();
     }
 
     void fillHour(Course course, int hour, int day, int i) {
         CourseElem c = new CourseElem(course.getCodCurso(), course.getName(), course.getMajor(), course.getSemester(), i);
-        timeSchedule[hour][day] = c;
+        if (hour >= 0 && hour < 15 && day >= 0 && day < 6) 
+            timeSchedule[hour][day] = c;
     }
 
     boolean checkAvailability(int i, int j) {

@@ -2,24 +2,25 @@ package mestoribios.proyecto.data.entities;
 
 import java.util.List;
 
-import mestoribios.proyecto.config.Pair;
-
-import java.util.ArrayList;
 
 public class SystemParameters {
 
-    private List<Pair<Integer,String>> numberStudents;
+    private List<Ingresante> listIngresenates;
 
-    SystemParameters(){
-        numberStudents = new ArrayList<>();
+    public SystemParameters(List<Ingresante> listIngresenates) {
+        this.listIngresenates = listIngresenates;
     }
 
-    public List<Pair<Integer,String>> getNumberStudents() {
-        return numberStudents;
+    public List<Ingresante> getListIngresenates() {
+        return listIngresenates;
     }
 
-    public void setNumberStudents(List<Pair<Integer,String>> numberStudents) {
-        this.numberStudents = numberStudents;
+    public void setListIngresenates(List<Ingresante> listIngresenates) {
+        this.listIngresenates = listIngresenates;
     }
+
+    public SystemParameters() {
+    }
+
 
 }

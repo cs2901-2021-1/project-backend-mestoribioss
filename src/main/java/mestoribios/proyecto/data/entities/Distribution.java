@@ -271,12 +271,30 @@ public class Distribution {
         return distributionFront;
     }
 
-    public void setNumberStudents(List<Pair<Integer, String>> numberStudents) {
-        for (Pair<Integer,String> pair : numberStudents) {
-            List<Course> coursesFromMajor = courses.get(pair.getSecond());
+    // public void setNumberStudents(List<Pair<Integer, String>> numberStudents) {
+    //     for (Pair<Integer,String> pair : numberStudents) {
+    //         List<Course> coursesFromMajor = courses.get(pair.getSecond());
+    //         for (Course courseFromMajor : coursesFromMajor) {
+    //             if (courseFromMajor.getSemester() == 1) {
+    //                 float num = pair.getFirst();
+    //                 int soloAula = courseFromMajor.getSections() + (int) (Math.ceil(num/45));
+    //                 if (courseFromMajor.getClassroomTheoType().equals("Aul"))
+    //                     courseFromMajor.setSections(soloAula);
+    //                 else if (courseFromMajor.getClassroomTheoType().equals("Aud"))
+    //                     courseFromMajor.setSections(soloAula + (int) (Math.floor(num/306)));
+    //             }
+    //         }
+    //     }
+    //     modify = false;
+    //     reset();
+    // }
+
+      public void setNumberStudents(SystemParameters numberStudents) {
+        for (Ingresante pair : numberStudents.getListIngresenates()) {
+            List<Course> coursesFromMajor = courses.get(pair.getMajor());
             for (Course courseFromMajor : coursesFromMajor) {
                 if (courseFromMajor.getSemester() == 1) {
-                    float num = pair.getFirst();
+                    float num = pair.getNumberStudents();
                     int soloAula = courseFromMajor.getSections() + (int) (Math.ceil(num/45));
                     if (courseFromMajor.getClassroomTheoType().equals("Aul"))
                         courseFromMajor.setSections(soloAula);
