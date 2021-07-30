@@ -14,7 +14,7 @@ public class ScheduleFront {
     }
 
     public void setDayValues(int dayVal) {
-        dayNumber = dayVal;
+        dayNumber = dayVal+1;
 
         if (dayNumber == 1) {
             day = "Lunes";
@@ -39,4 +39,30 @@ public class ScheduleFront {
     public void addCourseFront(CourseFront course) {
         courses.add(course);
     }
+
+    public String getDay() {
+        return day;
+    }
+
+    public void setDay(String day) {
+        this.day = day;
+    }
+
+    public Integer getDayNumber() {
+        return dayNumber;
+    }
+
+    public void setDayNumber(Integer dayNumber) {
+        this.dayNumber = dayNumber;
+    }
+
+    public List<CourseFront> getCourses() {
+        return courses;
+    }
+
+    public void setCourses(List<CourseFront> courses) {
+        this.courses = courses;
+    }
+
+    
 }

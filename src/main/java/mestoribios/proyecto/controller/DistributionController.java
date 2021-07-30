@@ -24,7 +24,9 @@ import java.util.Map;
 @CrossOrigin
 public class DistributionController {
     @GetMapping
-    public ResponseEntity<Object> generateDistribution() throws SQLException {
+    @RequestMapping("/generate")
+    public ResponseEntity<DistributionFront> generateDistribution() throws SQLException {
+        HashMap<String, Object> map = new HashMap<>();
         try {
             QueryService queryService = new QueryService();
             List<CourseResponse> courses = queryService.executeQueryCourses();
@@ -34,30 +36,35 @@ public class DistributionController {
             String lastNombre = "";
             String lastMalla = "";
             List<Classroom> totalClassrooms = new ArrayList<>();
+            List<Course> listAux;
 
             for (CourseResponse courseResponse : courses) {
-                if (courseResponse.getNomCurso() != lastNombre) {
-                    if (lastNombre != "") {
-                        if (!utecCourses.containsKey(lastMalla)) utecCourses.put(lastMalla, new ArrayList<>());
-                        List<Course> listAux = utecCourses.get(lastMalla);
+                listAux = new ArrayList<>();
+                if (!courseResponse.getNomCurso().equals(lastNombre)) {
+                    if (!lastNombre.equals("")) {
+                        if (!utecCourses.containsKey(lastMalla)) utecCourses.put(new String(lastMalla), new ArrayList<>());
+                        listAux = utecCourses.get(lastMalla);
                         listAux.add(curso);
                         utecCourses.put(lastMalla, listAux);
                     }
                     curso = new Course(courseResponse);
                 }
-                if (courseResponse.getCodMalla() != lastMalla && lastMalla != "") {
+                else if (!courseResponse.getCodMalla().equals(lastMalla) && !lastMalla.equals("")) {
                     // curso.setSemester(courseResponse.getCiclo());
-                    if (!utecCourses.containsKey(lastMalla)) utecCourses.put(lastMalla, new ArrayList<>());
-                    List<Course> listAux = utecCourses.get(lastMalla);
-                    listAux.add(curso);
-                    utecCourses.put(courseResponse.getCodMalla(), listAux);
-                    curso.setSemester(courseResponse.getCiclo());
+                    if (!utecCourses.containsKey(lastMalla)) utecCourses.put(new String(lastMalla), new ArrayList<>());
+                    listAux = utecCourses.get(lastMalla);
+                    if (!listAux.contains(curso))
+                    {
+                        listAux.add(curso);
+                        utecCourses.put(courseResponse.getCodMalla(), listAux);
+                        curso.setSemester(courseResponse.getCiclo());
+                    }
                 }
 
-                if (courseResponse.getType() == "Teoría") {
+                if (courseResponse.getType().equals("Teoría")) {
                     curso.increaseTheoHours(courseResponse.getHorasSemanales());
                 }
-                else if (courseResponse.getType() == "Laboratorio") {
+                else if (courseResponse.getType().equals("Laboratorio")) {
                     curso.increaseLabHours(courseResponse.getHorasSemanales());                    
                 }
                 lastNombre = courseResponse.getNomCurso();
@@ -69,13 +76,18 @@ public class DistributionController {
             }
 
             Distribution distribution = new Distribution(utecCourses, totalClassrooms);
-            distribution.generateDistribution();
-            DistributionFront distributionFront = distribution.getDetailedDistributionFront();
+            distribution.generateDistribution(); // index out of range
+            DistributionFront distributionFront = distribution.getDetailedDistributionFront(); // index out of range
+            map.put("data", distributionFront);
+            map.put("message", "Distribución generada!");
             return new ResponseEntity<>(distributionFront, HttpStatus.OK);
+            // return new ResponseEntity<HashMap<String, DistributionFront>, HttpStatus>(map, HttpStatus.OK);
         }
         catch (SQLException e) {
             e.printStackTrace();
-            return ResponseService.genError("fallo", HttpStatus.INTERNAL_SERVER_ERROR);
+            map.put("error", e.getMessage());
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            // return new ResponseEntity<HashMap<String, DistributionFront>>(map, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
         /*
