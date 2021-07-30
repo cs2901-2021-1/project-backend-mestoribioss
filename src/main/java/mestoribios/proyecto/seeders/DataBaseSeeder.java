@@ -56,6 +56,4 @@ public class DataBaseSeeder {
         users.add(new User("macarena.oyague@utec.edu.pe",password,"admin","Jorge","Vásquez"));
         return users;
     }
-
-
 }

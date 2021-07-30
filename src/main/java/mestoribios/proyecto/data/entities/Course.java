@@ -1,15 +1,17 @@
 package mestoribios.proyecto.data.entities;
 
-public class Course {
+public class Course { 
+    private String codCurso;
     private String name;
-    private int theoHours;
-    private int labHours;
-    private int theoSections;
-    private int labSections;
-    private int theoCapacity;
-    private int labCapacity;
-    private String classroomTheoType;
-    private String classroomLabType;
+    private int theoHours = 0;
+    private int labHours = 0;
+    // private int theoSections;
+    // private int labSections;
+    private int sections;
+    // private int theoCapacity;
+    // private int labCapacity;
+    private String classroomTheoType = "Aul";
+    private String classroomLabType = "Lab";
     private String major;
     private int semester;
 
@@ -17,21 +19,34 @@ public class Course {
         // Course default constructor
     }
 
-    public Course(String name, int theoHours, int labHours, int theoSections, int labSections, int theoCapacity,
-           int labCapacity,
-           String classroomTheoType,
-           String classroomLabType, String major, int semester) {
+    public Course(String codCurso, String name, int theoHours, int labHours, int sections, int labSections, int theoCapacity,
+           int labCapacity, String major, int semester, Boolean tieneAuditorio) {
+        this.codCurso = codCurso;
         this.name = name;
         this.theoHours = theoHours;
         this.labHours = labHours;
-        this.theoSections = theoSections;
-        this.labSections = labSections;
-        this.theoCapacity = theoCapacity;
-        this.labCapacity = labCapacity;
-        this.classroomTheoType = classroomTheoType;
-        this.classroomLabType = classroomLabType;
+        this.sections = sections;
+        // this.theoSections = theoSections;
+        // this.labSections = labSections;
+        // this.theoCapacity = theoCapacity;
+        // this.labCapacity = labCapacity;
+        this.classroomTheoType = tieneAuditorio ? "Aud" : "Aul";
+        // this.classroomLabType = "Lab";
         this.major = major;
         this.semester = semester;
+    }
+
+    public Course(CourseResponse courseResponse) {
+        this.codCurso = courseResponse.codCurso;
+        this.name = courseResponse.nomCurso;
+        this.sections = courseResponse.secciones;
+        this.major = courseResponse.codMalla;
+        this.semester = Integer.parseInt(courseResponse.ciclo.split(" ")[1]);
+    }
+
+
+    public String getCodCurso() {
+        return codCurso;
     }
 
     public String getName() {
@@ -54,13 +69,17 @@ public class Course {
         return labHours;
     }
 
-    public int getTheoSections() {
-        return theoSections;
+    public int getSections() {
+        return sections;
     }
 
-    public int getLabSections() {
-        return labSections;
-    }
+    // public int getTheoSections() {
+    //     return theoSections;
+    // }
+
+    // public int getLabSections() {
+    //     return labSections;
+    // }
 
     public String getClassroomTheoType() {
         return classroomTheoType;
@@ -70,19 +89,34 @@ public class Course {
         return classroomLabType;
     }
 
-    public int getTheoCapacity() {
-        return theoCapacity;
+    // public int getTheoCapacity() {
+    //     return theoCapacity;
+    // }
+
+    // public int getLabCapacity() {
+    //     return labCapacity;
+    // }
+
+    // public void setTheoSections(int theoSections) {
+    //     this.theoSections = theoSections;
+    // }
+
+    // public void setLabSections(int labSections) {
+    //     this.labSections = labSections;
+    // }
+    public void setSections(int sections) {
+        this.sections = sections;
     }
 
-    public int getLabCapacity() {
-        return labCapacity;
+    public void increaseTheoHours(int theoHours) {
+        this.theoHours += theoHours;
     }
 
-    public void setTheoSections(int theoSections) {
-        this.theoSections = theoSections;
+    public void increaseLabHours(int labHours) {
+        this.labHours += labHours;
     }
 
-    public void setLabSections(int labSections) {
-        this.labSections = labSections;
+    public void setSemester(String ciclo) {
+        this.semester = Integer.parseInt(ciclo.split(" ")[1]);
     }
 }

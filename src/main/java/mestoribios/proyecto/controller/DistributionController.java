@@ -4,30 +4,79 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import mestoribios.proyecto.data.entities.Classroom;
+import mestoribios.proyecto.data.entities.ClassroomResponse;
+import mestoribios.proyecto.data.entities.Course;
+import mestoribios.proyecto.data.entities.CourseResponse;
+import mestoribios.proyecto.data.entities.Distribution;
+import mestoribios.proyecto.front.DistributionFront;
+import mestoribios.proyecto.service.QueryService;
+import mestoribios.proyecto.service.ResponseService;
+
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.logging.Logger;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/distribution")
 @CrossOrigin
 public class DistributionController {
-
-    static final Logger logger = Logger.getLogger(DistributionController.class.getName());
-
     @PostMapping
-    public ResponseEntity<ArrayList<HashMap<String, String>>> generateDistribution(@RequestBody List<HashMap<String,String>> distributionDTO) {
+    public ResponseEntity<Object> generateDistribution(@RequestBody List<HashMap<String,String>> distributionDTO) throws SQLException {
+        try {
+            QueryService queryService = new QueryService();
+            List<CourseResponse> courses = queryService.executeQueryCourses();
+            List<ClassroomResponse> classroom = queryService.executeQueryClassrooms();
+            Map<String, List<Course>> utecCourses = new HashMap<>();
+            Course curso = new Course();
+            String lastNombre = "";
+            String lastMalla = "";
+            List<Classroom> totalClassrooms = new ArrayList<>();
 
-        ArrayList<HashMap<String, String>> dummy = new ArrayList<>();
-        HashMap<String, String> h1 = new HashMap<>();
-        HashMap<String, String> h2 = new HashMap<>();
-        h1.put("Salon teoria", "8");
-        h2.put("Salon teoria", "2");
-        dummy.add(h1);
-        dummy.add(h2);
+            for (CourseResponse courseResponse : courses) {
+                if (courseResponse.getNomCurso() != lastNombre) {
+                    if (lastNombre != "") {
+                        if (!utecCourses.containsKey(lastMalla)) utecCourses.put(lastMalla, new ArrayList<>());
+                        List<Course> listAux = utecCourses.get(lastMalla);
+                        listAux.add(curso);
+                        utecCourses.put(lastMalla, listAux);
+                    }
+                    curso = new Course(courseResponse);
+                }
+                if (courseResponse.getCodMalla() != lastMalla && lastMalla != "") {
+                    // curso.setSemester(courseResponse.getCiclo());
+                    if (!utecCourses.containsKey(lastMalla)) utecCourses.put(lastMalla, new ArrayList<>());
+                    List<Course> listAux = utecCourses.get(lastMalla);
+                    listAux.add(curso);
+                    utecCourses.put(courseResponse.getCodMalla(), listAux);
+                    curso.setSemester(courseResponse.getCiclo());
+                }
 
-        return new ResponseEntity<>(dummy, HttpStatus.OK);
+                if (courseResponse.getType() == "Teoría") {
+                    curso.increaseTheoHours(courseResponse.getHorasSemanales());
+                }
+                else if (courseResponse.getType() == "Laboratorio") {
+                    curso.increaseLabHours(courseResponse.getHorasSemanales());                    
+                }
+                lastNombre = courseResponse.getNomCurso();
+                lastMalla  = courseResponse.getCodMalla();
+            }
+            
+            for (ClassroomResponse classroomResponse : classroom) {
+                totalClassrooms.add(new Classroom(classroomResponse));
+            }
+
+            Distribution distribution = new Distribution(utecCourses, totalClassrooms);
+            distribution.generateDistribution();
+            DistributionFront distributionFront = distribution.getDetailedDistributionFront();
+            return new ResponseEntity<>(distributionFront, HttpStatus.OK);
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+            return ResponseService.genError("fallo", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
 
         /*
         descomentar cuando ya este arreglado lo de los cursos (da error porq no hay cursos)
