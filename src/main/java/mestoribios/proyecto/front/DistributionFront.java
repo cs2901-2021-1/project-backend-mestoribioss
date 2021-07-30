@@ -2,15 +2,6 @@ package mestoribios.proyecto.front;
 
 import java.util.List;
 
-// import javax.transaction.Transactional;
-
-// import org.springframework.beans.factory.annotation.Autowired;
-// import org.springframework.stereotype.Service;
-
-// import mestoribios.proyecto.data.repositories.UserRepository;
-
-// @Service
-// @Transactional
 public class DistributionFront {
     Integer classroomExistButNotUsed;
     List<ClassroomFront> classroomUsed;

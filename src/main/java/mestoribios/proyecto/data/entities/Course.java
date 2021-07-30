@@ -15,18 +15,6 @@ public class Course {
         // Course default constructor
     }
 
-    public Course(String codCurso, String name, int theoHours, int labHours, int sections, int labSections, int theoCapacity,
-           int labCapacity, String major, int semester, Boolean tieneAuditorio) {
-        this.codCurso = codCurso;
-        this.name = name;
-        this.theoHours = theoHours;
-        this.labHours = labHours;
-        this.sections = sections;
-        this.classroomTheoType = tieneAuditorio ? "Aud" : "Aul";
-        this.major = major;
-        this.semester = semester;
-    }
-
     public Course(CourseResponse courseResponse) {
         this.codCurso = courseResponse.codCurso;
         this.name = courseResponse.nomCurso;

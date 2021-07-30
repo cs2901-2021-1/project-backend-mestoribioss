@@ -30,7 +30,7 @@ public class QueryService {
             return listaRpta;
         } catch (SQLException e) {
             e.printStackTrace();
-            return null;
+            return new ArrayList<>();
         }
     }
 
@@ -45,7 +45,7 @@ public class QueryService {
             return listaRpta;
         } catch (SQLException e) {
             e.printStackTrace();
-            return null;
+            return new ArrayList<>();
         }
     }
 }
