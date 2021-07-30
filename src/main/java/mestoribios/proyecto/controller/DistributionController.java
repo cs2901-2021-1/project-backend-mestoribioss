@@ -23,8 +23,8 @@ import java.util.Map;
 @RequestMapping("/distribution")
 @CrossOrigin
 public class DistributionController {
-    @PostMapping
-    public ResponseEntity<Object> generateDistribution(@RequestBody List<HashMap<String,String>> distributionDTO) throws SQLException {
+    @GetMapping
+    public ResponseEntity<Object> generateDistribution() throws SQLException {
         try {
             QueryService queryService = new QueryService();
             List<CourseResponse> courses = queryService.executeQueryCourses();
