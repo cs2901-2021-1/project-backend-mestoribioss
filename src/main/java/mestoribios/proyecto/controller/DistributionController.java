@@ -33,9 +33,7 @@ public class DistributionController {
     @PostMapping
     public ResponseEntity<DistributionFront> generateDistributionCachimbos(@RequestBody(required = false) SystemParameters ingresantes) throws SQLException {
         HashMap<String, Object> map = new HashMap<>();
-        try {
-            // QueryService queryService = new QueryService();
-            
+        try {            
             return new ResponseEntity<>(makeDistribution(ingresantes), HttpStatus.OK);
         }
         catch (SQLException e) {
@@ -87,8 +85,7 @@ public class DistributionController {
             distribution.setNumberStudents(ingresantes);
         }
         distribution.generateDistribution();
-        DistributionFront distributionFront = distribution.getDetailedDistributionFront();
-        return distributionFront;
+        return distribution.getDetailedDistributionFront();
     }
 
 }

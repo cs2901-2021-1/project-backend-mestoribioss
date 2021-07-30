@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import mestoribios.proyecto.data.entities.ClassroomResponse;
 import mestoribios.proyecto.data.entities.CourseResponse;
-// import mestoribios.proyecto.data.repositories.QueryResponseRepository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -20,9 +19,6 @@ import java.sql.SQLException;
 @Service
 @Transactional
 public class QueryService {
-	// @Autowired
-	// QueryResponseRepository queryResponseRepository;
-
     public List<CourseResponse> executeQueryCourses() throws SQLException {
         try {
             Connection connection = DriverManager.getConnection("jdbc:oracle:thin:@coreqa4.cl2cyff2cklb.us-west-2.rds.amazonaws.com:1521:coreqa4", "desarrollo", "qad3vLE7Uk0110xor");

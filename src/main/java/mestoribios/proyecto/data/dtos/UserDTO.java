@@ -9,6 +9,7 @@ public class UserDTO {
     String email;
     
     public UserDTO() {
+        // constructor
     }
     
     public Integer getId() {

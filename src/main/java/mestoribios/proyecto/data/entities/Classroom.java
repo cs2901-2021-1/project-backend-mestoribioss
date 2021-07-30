@@ -7,7 +7,6 @@ import mestoribios.proyecto.front.CourseFront;
 import mestoribios.proyecto.front.ScheduleFront;
 
 public class Classroom {
-    // private Integer id;
     private String name;
     private String type;
     private boolean used = false;

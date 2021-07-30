@@ -5,11 +5,7 @@ public class Course {
     private String name;
     private int theoHours = 0;
     private int labHours = 0;
-    // private int theoSections;
-    // private int labSections;
     private int sections;
-    // private int theoCapacity;
-    // private int labCapacity;
     private String classroomTheoType = "Aul";
     private String classroomLabType = "Lab";
     private String major;
@@ -26,12 +22,7 @@ public class Course {
         this.theoHours = theoHours;
         this.labHours = labHours;
         this.sections = sections;
-        // this.theoSections = theoSections;
-        // this.labSections = labSections;
-        // this.theoCapacity = theoCapacity;
-        // this.labCapacity = labCapacity;
         this.classroomTheoType = tieneAuditorio ? "Aud" : "Aul";
-        // this.classroomLabType = "Lab";
         this.major = major;
         this.semester = semester;
     }
@@ -73,14 +64,6 @@ public class Course {
         return sections;
     }
 
-    // public int getTheoSections() {
-    //     return theoSections;
-    // }
-
-    // public int getLabSections() {
-    //     return labSections;
-    // }
-
     public String getClassroomTheoType() {
         return classroomTheoType;
     }
@@ -89,21 +72,6 @@ public class Course {
         return classroomLabType;
     }
 
-    // public int getTheoCapacity() {
-    //     return theoCapacity;
-    // }
-
-    // public int getLabCapacity() {
-    //     return labCapacity;
-    // }
-
-    // public void setTheoSections(int theoSections) {
-    //     this.theoSections = theoSections;
-    // }
-
-    // public void setLabSections(int labSections) {
-    //     this.labSections = labSections;
-    // }
     public void setSections(int sections) {
         this.sections = sections;
     }

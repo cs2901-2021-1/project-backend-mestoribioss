@@ -45,7 +45,7 @@ public class Distribution {
 
     public void updateClassroom(Classroom a){
         for (int i = 0; i < totalClassrooms.size(); ++i){
-            if (totalClassrooms.get(i).getName() == a.getName()){
+            if (totalClassrooms.get(i).getName().equals(a.getName())){
                 totalClassrooms.set(i, a);
             }
         }
